@@ -24,6 +24,8 @@ class _StockChartState extends State<StockChart> {
   @override
   Widget build(BuildContext context) {
 
+    //Change the current theme from light to dark
+
     return SfCartesianChart(
         margin: const EdgeInsets.symmetric(horizontal: 0),
         plotAreaBorderWidth: 0,

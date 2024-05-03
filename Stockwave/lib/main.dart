@@ -11,8 +11,20 @@ void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  ThemeMode themeMode = ThemeMode.light;
+  
+  void _toggleTheme() {
+    setState(() {
+      themeMode = themeMode == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,15 +36,21 @@ class MyApp extends StatelessWidget {
         fontFamily: GoogleFonts.fredoka().fontFamily,
         colorScheme: lightColorTheme,
       ),
-      home: const MyHomePage(title: 'Apple vs Microsoft'),
+      darkTheme: ThemeData(
+        useMaterial3: true,
+        fontFamily: GoogleFonts.fredoka().fontFamily,
+        colorScheme: darkColorTheme,
+      ),
+      themeMode: themeMode,
+      home: MyHomePage(onToggleTheme: _toggleTheme),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
+  const MyHomePage({super.key, required this.onToggleTheme});
+  
+  final VoidCallback onToggleTheme;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -40,6 +58,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   List<Series> series = [];
+  IconData currentIcon = Icons.dark_mode_outlined;
   
   @override
   void initState() {
@@ -72,13 +91,22 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
 
-
   @override
   Widget build(BuildContext context) {
+
+    void onChangedColorTheme() {
+      setState(() {
+        widget.onToggleTheme();
+        currentIcon = currentIcon == Icons.dark_mode_outlined ?
+          Icons.light_mode :
+          Icons.dark_mode_outlined;
+      });
+    }
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.primary,
-        title: Text(widget.title),
+        title: const Text('Apple vs Microsoft'),
         centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
@@ -88,10 +116,8 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.info_outline),
-            onPressed: () {
-              debugPrint('Search button pressed');
-            },
+            icon: Icon(currentIcon),
+            onPressed: onChangedColorTheme,
           ),
         ],
       ),
