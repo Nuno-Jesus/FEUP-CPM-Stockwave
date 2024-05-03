@@ -7,7 +7,7 @@ const ColorScheme lightColorTheme = ColorScheme(
   onPrimaryContainer: Colors.black,
   secondary: Color(0xFFEADBC8),
   onSecondary: Colors.black,
-  secondaryContainer: Color(0xFF102C57),
+  secondaryContainer: Color(0xFF304C77),
   onSecondaryContainer: Colors.white,
   tertiary: Color(0xFFDAC0A3),
   onTertiary: Colors.black,
@@ -22,15 +22,22 @@ const ColorScheme lightColorTheme = ColorScheme(
 );
 
 const ColorScheme darkColorTheme = ColorScheme(
-  primary: Color(0xFF121212),
+  primary: Color(0xFF222831),
   onPrimary: Colors.white,
-  secondary: Color(0xFF1F1F1F),
+  primaryContainer: Color(0xFFEADBC8),
+  onPrimaryContainer: Colors.black,
+  secondary: Color(0xFF1E1E1E),
   onSecondary: Colors.white,
+  secondaryContainer: Color(0xFF304C77),
+  onSecondaryContainer: Colors.white,
+  tertiary: Color(0xFFDAC0A3),
+  onTertiary: Colors.black,
   error: Colors.redAccent,
   onError: Colors.white,
-  background: Color(0xFF121212),
+  background: Color(0xFF222831),
   onBackground: Colors.white,
-  surface: Color(0xFF1F1F1F),
+  surface: Color(0xFF1E1E1E),
   onSurface: Colors.white,
-  brightness: Brightness.dark
+  brightness: Brightness.dark,
+  inversePrimary: Color(0xFFFEFAF6),
 );

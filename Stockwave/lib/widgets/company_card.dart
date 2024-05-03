@@ -24,7 +24,7 @@ class CompanyCard extends StatelessWidget {
   Widget build(BuildContext context){
     return Container(
       // color: Theme.of(context).colorScheme.error,
-      margin: const EdgeInsets.symmetric(vertical: 0),
+      margin: const EdgeInsets.symmetric(horizontal: 16),
       child: Card(
         color: cardColor,
         child: Container(
