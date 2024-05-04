@@ -1,29 +1,31 @@
 import 'package:flutter/material.dart';
 
+import '../models/company.dart';
 import '../models/series.dart';
 
 class CompanyCard extends StatelessWidget {
   const CompanyCard({
     super.key,
-    required this.name,
-    required this.nasdaq,
-    required this.icon,
+    required this.company,
     required this.todaySeries,
-    required this.cardColor,
-    required this.textColor
+    this.isSecondary = false,
   });
 
-  final String name;
-  final String nasdaq;
-  final IconData icon;
+  final Company company;
   final Series todaySeries;
-  final Color cardColor;
-  final Color textColor;
+  final bool isSecondary;
 
   @override
   Widget build(BuildContext context){
+    final Color cardColor = isSecondary
+        ? Theme.of(context).colorScheme.secondaryContainer
+        : Theme.of(context).colorScheme.primaryContainer;
+
+    final Color textColor = isSecondary
+        ? Theme.of(context).colorScheme.onSecondaryContainer
+        : Theme.of(context).colorScheme.onPrimaryContainer;
+
     return Container(
-      // color: Theme.of(context).colorScheme.error,
       margin: const EdgeInsets.symmetric(horizontal: 16),
       child: Card(
         color: cardColor,
@@ -53,6 +55,10 @@ class CompanyCard extends StatelessWidget {
   }
 
   Widget buildTopRow(BuildContext context){
+    final Color textColor = isSecondary
+        ? Theme.of(context).colorScheme.onSecondaryContainer
+        : Theme.of(context).colorScheme.onPrimaryContainer;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -65,7 +71,7 @@ class CompanyCard extends StatelessWidget {
               color: const Color.fromRGBO(0, 0, 0, 0.17),
               borderRadius: BorderRadius.circular(10),
             ),
-            child: Icon(icon, size: 30, color: textColor),
+            child: Icon(company['icon'], size: 30, color: textColor),
           ),
 
           // Company name and NASDAQ symbol
@@ -75,7 +81,7 @@ class CompanyCard extends StatelessWidget {
               Container(
                 margin: const EdgeInsets.only(left: 11),
                 child: Text(
-                  nasdaq,
+                  company['symbol'],
                   style: TextStyle(
                       color: textColor,
                       fontSize: 18,
@@ -88,7 +94,7 @@ class CompanyCard extends StatelessWidget {
               Container(
                 margin: const EdgeInsets.only(left: 11),
                 child: Text(
-                  name,
+                  company['name'],
                   style: TextStyle(
                       color: textColor.withOpacity(0.7),
                       fontSize: 14,
@@ -126,6 +132,10 @@ class CompanyCard extends StatelessWidget {
   }
 
   Widget buildBottomRow(BuildContext context){
+    final Color textColor = isSecondary
+        ? Theme.of(context).colorScheme.onSecondaryContainer
+        : Theme.of(context).colorScheme.onPrimaryContainer;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [

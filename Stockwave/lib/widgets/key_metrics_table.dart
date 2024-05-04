@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:stockwave/models/company_metrics.dart';
+import 'package:stockwave/models/company.dart';
 
-class KeyMetricsTable extends StatefulWidget {
-  final CompanyMetrics firstCompanyMetrics;
-  final CompanyMetrics secondCompanyMetrics;
+class CompanyMetricsTable extends StatefulWidget {
+  final Company firstCompany;
+  final Company secondCompany;
 
-  const KeyMetricsTable({
+  const CompanyMetricsTable({
     super.key,
-    required this.firstCompanyMetrics,
-    required this.secondCompanyMetrics
+    required this.firstCompany,
+    required this.secondCompany
   });
 
   @override
-  State<KeyMetricsTable> createState() => _KeyMetricsTableState();
+  State<CompanyMetricsTable> createState() => _CompanyMetricsTableState();
 }
 
-class _KeyMetricsTableState extends State<KeyMetricsTable> {
+class _CompanyMetricsTableState extends State<CompanyMetricsTable> {
   @override
   Widget build(BuildContext context) {
 
@@ -26,23 +26,23 @@ class _KeyMetricsTableState extends State<KeyMetricsTable> {
         fontStyle: FontStyle.normal,
         fontSize: 16,
       ),
-      columns: const <DataColumn>[
-        DataColumn(
+      columns: <DataColumn>[
+        const DataColumn(
           label: Expanded(child: Text('Metric')),
         ),
         DataColumn(
-          label: Expanded(child: Text('AAPL')),
+          label: Expanded(child: Text(widget.firstCompany['symbol'])),
         ),
         DataColumn(
-          label: Expanded(child: Text('MSFT')),
+          label: Expanded(child: Text(widget.secondCompany['symbol'])),
         ),
       ],
-      rows: widget.firstCompanyMetrics.metrics.keys.map((metric) {
+      rows: widget.firstCompany.metrics.keys.map((metric) {
         return DataRow(
           cells: [
             DataCell(Text(metric)),
-            DataCell(Text(widget.firstCompanyMetrics.metrics[metric]!)),
-            DataCell(Text(widget.secondCompanyMetrics.metrics[metric]!)),
+            DataCell(Text(widget.firstCompany.metrics[metric]!)),
+            DataCell(Text(widget.secondCompany.metrics[metric]!)),
           ],
         );
       }).toList(),
