@@ -5,6 +5,7 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 
 import '../api.dart';
+import '../models/series.dart';
 
 class StockChart extends StatefulWidget {
   const StockChart({
@@ -29,9 +30,7 @@ class _StockChartState extends State<StockChart> {
     return SfCartesianChart(
         margin: const EdgeInsets.symmetric(horizontal: 0),
         plotAreaBorderWidth: 0,
-        primaryXAxis: const NumericAxis(
-            isVisible: false,
-        ),
+        primaryXAxis: const NumericAxis(isVisible: false,),
         primaryYAxis: const NumericAxis(isVisible: false),
         trackballBehavior: TrackballBehavior(
             enable: true,

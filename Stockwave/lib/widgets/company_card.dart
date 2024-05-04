@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../api.dart';
+import '../models/series.dart';
 
 class CompanyCard extends StatelessWidget {
   const CompanyCard({

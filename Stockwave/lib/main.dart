@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:stockwave/api.dart';
 import 'package:stockwave/theme.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:stockwave/widgets/key_metrics_table.dart';
 import 'package:stockwave/widgets/stock_chart.dart';
 import 'dart:convert';
 
 import 'package:stockwave/widgets/company_card.dart';
+
+import 'models/company_metrics.dart';
+import 'models/series.dart';
 
 void main() {
   runApp(const MyApp());
@@ -58,6 +62,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   List<Series> series = [];
+  late CompanyMetrics firstCompanyMetrics;
+  late CompanyMetrics secondCompanyMetrics;
   IconData currentIcon = Icons.dark_mode_outlined;
   
   @override
@@ -65,6 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
 
     _loadSeries();
+    _loadCompanyMetrics();
   }
 
   Future _loadSeries() async {
@@ -88,6 +95,26 @@ class _MyHomePageState extends State<MyHomePage> {
 
     debugPrint('Loaded series: ${series.length}');
     debugPrint(series[0].toString());
+  }
+
+  Future _loadCompanyMetrics() async {
+    firstCompanyMetrics = const CompanyMetrics(metrics: {
+      'Market Cap': '2.46T',
+      'Revenue': '365.7B',
+      'Dividend Yield': '0.52%',
+      'P/E Ratio': '28.15',
+      'EPS': '5.1',
+      'Beta': '1.2',
+    });
+
+    secondCompanyMetrics = const CompanyMetrics(metrics: {
+      'Market Cap': '2.98T',
+      'Revenue': '168.1B',
+      'Dividend Yield': '0.82%',
+      'P/E Ratio': '35.15',
+      'EPS': '3.1',
+      'Beta': '1.5',
+    });
   }
 
 
@@ -121,8 +148,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
-        body: Container(
-          // margin: const EdgeInsets.symmetric(horizontal: 16),
+        body: SingleChildScrollView(
           child: Column(
             children: [
               CompanyCard(
@@ -141,7 +167,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   cardColor: Theme.of(context).colorScheme.secondaryContainer,
                   textColor: Theme.of(context).colorScheme.onSecondaryContainer
               ),
-              StockChart(series: series)
+              StockChart(series: series),
+              KeyMetricsTable(
+                  firstCompanyMetrics: firstCompanyMetrics,
+                  secondCompanyMetrics: secondCompanyMetrics
+              ),
+              SizedBox(height: 20.0)
             ],
           ),
         )
