@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stockwave/widgets/company_card.dart';
-import 'package:stockwave/widgets/key_metrics_table.dart';
+import 'package:stockwave/widgets/company_metrics_table.dart';
 import 'package:stockwave/widgets/stock_chart.dart';
 import 'package:stockwave/models/company.dart';
 import 'package:stockwave/models/series.dart';

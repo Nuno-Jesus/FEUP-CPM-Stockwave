@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:stockwave/widgets/company_metrics_table.dart';
 import 'package:stockwave/widgets/my_divider.dart';
 import 'package:stockwave/widgets/company_card.dart';
-import 'package:stockwave/widgets/company_details_panel_list.dart';
+import 'package:stockwave/widgets/company_general_information.dart';
 import 'package:stockwave/widgets/stock_chart.dart';
 import 'package:stockwave/models/company.dart';
 import 'package:stockwave/models/series.dart';
@@ -82,6 +83,7 @@ class _TwoCompanyViewState extends State<TwoCompanyView> {
     details: {
       'name': 'Apple Inc.',
       'symbol': 'AAPL',
+      'description' : 'Apple Inc. designs, manufactures, and markets smartphones, personal computers, tablets, wearables, and accessories worldwide. It also sells various related services. The company offers iPhone, a line of smartphones; Mac, a line of personal computers; iPad, a line of multi-purpose tablets; and wearables, home, and accessories comprising AirPods, Apple TV, Apple Watch, Beats products, HomePod, iPod touch, and other Apple-branded and third-party accessories. It also provides AppleCare support services; cloud services store services; and operates various platforms, including the App Store, that allow customers to discover and download applications and digital content, such as books, music, video, games, and podcasts. In addition, the company offers various services, such as Apple Arcade, a game subscription service; Apple Music, which offers users a curated listening experience with on-demand radio stations; Apple News+, a subscription news and magazine service; Apple TV+, which offers exclusive original content; Apple Card, a co-branded credit card; and Apple Pay, a cashless payment service, as well as licenses its intellectual property. The company serves consumers, and small and mid-sized businesses; and the education, enterprise, and government markets. It sells and delivers third-party applications for its products through the App Store. The company also sells its products through its retail and online stores, and direct sales force; and third-party cellular network carriers, wholesalers, retailers, and resellers. Apple Inc. was founded in 1977 and is headquartered in Cupertino, California.',
       'icon': Icons.apple,
     });
     
@@ -96,6 +98,7 @@ class _TwoCompanyViewState extends State<TwoCompanyView> {
     details: {
       'name': 'Microsoft Corporation',
       'symbol': 'MSFT',
+      'description' : 'Microsoft Corporation develops, licenses, and supports software, services, devices, and solutions worldwide. Its Productivity and Business Processes segment offers Office, Exchange, SharePoint, Microsoft Teams, Office 365 Security and Compliance, and Skype for Business, as well as related Client Access Licenses (CAL); Skype, Outlook.com, and OneDrive; LinkedIn that includes Talent, Learning, Sales, and Marketing solutions, as well as premium subscriptions; and Dynamics 365, a set of cloud-based and on-premises business solutions for small and medium businesses, large organizations, and divisions of enterprises. Its Intelligent Cloud segment licenses SQL and Windows Servers, Visual Studio, System Center, and related CALs; GitHub that provides a collaboration platform and code hosting service for developers; and Azure, a cloud platform. It also provides support services and Microsoft consulting services to assist customers in developing, deploying, and managing Microsoft server and desktop solutions; and training and certification to developers and IT professionals on various Microsoft products. Its More Personal Computing segment offers Windows OEM licensing and other non-volume licensing of the Windows operating system; Windows Commercial comprising volume licensing of the Windows operating system, Windows cloud services, and other Windows commercial offerings; patent licensing; Windows Internet of Things; and MSN advertising. It also provides Microsoft Surface, PC accessories, and other intelligent devices; Gaming, including Xbox hardware, and Xbox software and services; video games and third-party video game royalties; and Search, including Bing and Microsoft advertising. It sells its products through OEMs, distributors, and resellers; and directly through digital marketplaces, online stores, and retail stores. The company was founded in 1975 and is headquartered in Redmond, Washington.',
       'icon': Icons.window_sharp,
     });
   }
@@ -137,7 +140,7 @@ class _TwoCompanyViewState extends State<TwoCompanyView> {
           children: <Widget>[
             StockChart(series: firstSeries),
             SizedBox(
-              height: 1000,
+              height: MediaQuery.of(context).size.height,
               child: ListView.builder(
                 physics: const ClampingScrollPhysics(),
                 shrinkWrap: true,
@@ -156,7 +159,8 @@ class _TwoCompanyViewState extends State<TwoCompanyView> {
                         width: MediaQuery.of(context).size.width * 0.6,
                         margin: const EdgeInsets.symmetric(vertical: 16),
                       ),
-                      CompanyDetails(company: companies[index]),
+                      CompanyMetricsTable(company: companies[index]),
+                      CompanyGeneralInformation(company: companies[index])
                     ],
                   ),
                 ),

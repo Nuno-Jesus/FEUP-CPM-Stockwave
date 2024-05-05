@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../models/company.dart';
-import 'key_metrics_table.dart';
+import 'company_metrics_table.dart';
 
 class Item extends StatelessWidget{
   bool isExpanded;
