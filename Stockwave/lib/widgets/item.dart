@@ -1,0 +1,36 @@
+import 'package:flutter/material.dart';
+
+class Item {
+  bool isExpanded;
+  final String title;
+  final Widget content;
+
+  Item({
+    this.isExpanded = false,
+    required this.title,
+    required this.content,
+  });
+
+  ExpansionPanel builder(BuildContext context) {
+    return ExpansionPanel(
+      headerBuilder: (BuildContext context, bool isExpanded) {
+        return Container(
+          alignment: Alignment.centerLeft,
+          margin: const EdgeInsets.only(left: 20),
+          child: Text(
+              title,
+              style: const TextStyle(
+                fontSize: 18,
+                // backgroundColor: Colors.red
+              ),
+              textAlign: TextAlign.left,
+          ),
+        );
+      },
+      backgroundColor: Theme.of(context).colorScheme.background,
+      // backgroundColor: Colors.blue,
+      body: content,
+      isExpanded: isExpanded,
+    );
+  }
+}

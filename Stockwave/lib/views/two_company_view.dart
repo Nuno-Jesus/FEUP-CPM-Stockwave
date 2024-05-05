@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stockwave/widgets/company_card.dart';
+import 'package:stockwave/widgets/company_details_panel_list.dart';
 import 'package:stockwave/widgets/key_metrics_table.dart';
 import 'package:stockwave/widgets/stock_chart.dart';
 import 'package:stockwave/models/company.dart';
@@ -22,7 +23,8 @@ class TwoCompanyView extends StatefulWidget {
 }
 
 class _TwoCompanyViewState extends State<TwoCompanyView> {
-  List<Series> series = [];
+  List<Series> firstSeries = [];
+  List<Series> secondSeries = [];
   late Company firstCompany;
   late Company secondCompany;
   IconData currentIcon = Icons.dark_mode_outlined;
@@ -44,18 +46,27 @@ class _TwoCompanyViewState extends State<TwoCompanyView> {
     // for (var entry in jsonData['Time Series (Daily)']) {
     //   series.add(Series.fromJson(entry.key, entry.value));
     // }
-    series.add(Series(open: 40.0, close: 20.0, high: 3.0, low: 0.5, volume: 1000.0, date: '2022-01-10'));
-    series.add(Series(open: 23.0, close: 33.0, high: 4.0, low: 1.5, volume: 2000.0, date: '2022-01-11'));
-    series.add(Series(open: 15.0, close: 12.0, high: 5.0, low: 2.5, volume: 3000.0, date: '2022-01-12'));
-    series.add(Series(open: 66.0, close: 50.0, high: 6.0, low: 3.5, volume: 4000.0, date: '2022-01-13'));
-    series.add(Series(open: 78.0, close: 55.0, high: 7.0, low: 4.5, volume: 5000.0, date: '2022-01-14'));
-    series.add(Series(open: 32.0, close: 60.0, high: 8.0, low: 5.5, volume: 6000.0, date: '2022-01-15'));
-    series.add(Series(open: 25.0, close: 13.0, high: 9.0, low: 6.5, volume: 7000.0, date: '2022-01-16'));
-    series.add(Series(open: 64.0, close: 35.0, high: 10.0, low: 7.5, volume: 8000.0, date: '2022-01-17'));
+    firstSeries.add(const Series(open: 40.0, close: 20.0, high: 3.0, low: 0.5, volume: 1000.0, date: '2022-01-10'));
+    firstSeries.add(const Series(open: 23.0, close: 33.0, high: 4.0, low: 1.5, volume: 2000.0, date: '2022-01-11'));
+    firstSeries.add(const Series(open: 15.0, close: 12.0, high: 5.0, low: 2.5, volume: 3000.0, date: '2022-01-12'));
+    firstSeries.add(const Series(open: 66.0, close: 50.0, high: 6.0, low: 3.5, volume: 4000.0, date: '2022-01-13'));
+    firstSeries.add(const Series(open: 78.0, close: 55.0, high: 7.0, low: 4.5, volume: 5000.0, date: '2022-01-14'));
+    firstSeries.add(const Series(open: 32.0, close: 60.0, high: 8.0, low: 5.5, volume: 6000.0, date: '2022-01-15'));
+    firstSeries.add(const Series(open: 25.0, close: 13.0, high: 9.0, low: 6.5, volume: 7000.0, date: '2022-01-16'));
+    firstSeries.add(const Series(open: 64.0, close: 35.0, high: 10.0, low: 7.5, volume: 8000.0, date: '2022-01-17'));
+
+    secondSeries.add(const Series(open: 40.0, close: 20.0, high: 3.0, low: 0.5, volume: 1000.0, date: '2022-01-10'));
+    secondSeries.add(const Series(open: 23.0, close: 33.0, high: 4.0, low: 1.5, volume: 2000.0, date: '2022-01-11'));
+    secondSeries.add(const Series(open: 15.0, close: 12.0, high: 5.0, low: 2.5, volume: 3000.0, date: '2022-01-12'));
+    secondSeries.add(const Series(open: 66.0, close: 50.0, high: 6.0, low: 3.5, volume: 4000.0, date: '2022-01-13'));
+    secondSeries.add(const Series(open: 78.0, close: 55.0, high: 7.0, low: 4.5, volume: 5000.0, date: '2022-01-14'));
+    secondSeries.add(const Series(open: 32.0, close: 60.0, high: 8.0, low: 5.5, volume: 6000.0, date: '2022-01-15'));
+    secondSeries.add(const Series(open: 25.0, close: 13.0, high: 9.0, low: 6.5, volume: 7000.0, date: '2022-01-16'));
+    secondSeries.add(const Series(open: 64.0, close: 35.0, high: 10.0, low: 7.5, volume: 8000.0, date: '2022-01-17'));
 
 
-    debugPrint('Loaded series: ${series.length}');
-    debugPrint(series[0].toString());
+    debugPrint('Loaded series: ${firstSeries.length}');
+    debugPrint(firstSeries[0].toString());
   }
 
   Future _loadCompanyMetrics() async {
@@ -94,9 +105,9 @@ class _TwoCompanyViewState extends State<TwoCompanyView> {
     void onChangedColorTheme() {
       setState(() {
         widget.onToggleTheme();
-        currentIcon = currentIcon == Icons.dark_mode_outlined ?
-        Icons.light_mode :
-        Icons.dark_mode_outlined;
+        currentIcon = currentIcon == Icons.dark_mode_outlined
+            ? Icons.light_mode
+            : Icons.dark_mode_outlined;
       });
     }
 
@@ -123,19 +134,20 @@ class _TwoCompanyViewState extends State<TwoCompanyView> {
             children: [
               CompanyCard(
                   company: firstCompany,
-                  todaySeries: series[0],
+                  todaySeries: firstSeries[0],
               ),
               CompanyCard(
                   company: secondCompany,
-                  todaySeries: series[1],
+                  todaySeries: firstSeries[1],
                   isSecondary: true,
               ),
-              StockChart(series: series),
+              CompanyDetailsPanelList(company: firstCompany),
+              StockChart(series: firstSeries),
               CompanyMetricsTable(
                   firstCompany: firstCompany,
                   secondCompany: secondCompany
               ),
-              SizedBox(height: 20.0)
+              const SizedBox(height: 20.0)
             ],
           ),
         )
