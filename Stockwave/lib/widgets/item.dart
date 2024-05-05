@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../models/company.dart';
+import 'key_metrics_table.dart';
+
 class Item {
   bool isExpanded;
   final String title;
@@ -12,6 +15,7 @@ class Item {
   });
 
   ExpansionPanel builder(BuildContext context) {
+    debugPrint('Building ${isExpanded ? 'expanded' : 'collapsed'} item: $title');
     return ExpansionPanel(
       headerBuilder: (BuildContext context, bool isExpanded) {
         return Container(

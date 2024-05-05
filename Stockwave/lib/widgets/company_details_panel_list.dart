@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:stockwave/models/company.dart';
 
 import 'item.dart';
+import 'key_metrics_table.dart';
 
 class CompanyDetailsPanelList extends StatefulWidget {
   final Company company;
@@ -10,22 +11,39 @@ class CompanyDetailsPanelList extends StatefulWidget {
     super.key,
     required this.company,
   });
+
   
   CompanyDetailsPanelListState createState() => CompanyDetailsPanelListState();
 }
 
 class CompanyDetailsPanelListState extends State<CompanyDetailsPanelList> {
-  List<Item> items = [
-    Item(title: 'Key Ratios', isExpanded: true, content: Text('Key Ratios')),
-    Item(title: 'General Information', content: Text('General Information')),
-  ];
-  
-  
+  List<Item> items = <Item>[];
+
+  @override
+  void initState() {
+    super.initState();
+
+    items = [
+      Item(
+        title: 'Key Metrics',
+        content: CompanyMetricsTable(
+            firstCompany: widget.company,
+            secondCompany: widget.company
+        ),
+      ),
+      Item(
+        title: 'General Information',
+        content: Text('General Details'),
+      ),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     return ExpansionPanelList(
       expansionCallback: (int index, bool isExpanded) {
         setState(() {
+          debugPrint('expansionCallback($index, $isExpanded)');
           items[index].isExpanded = isExpanded;
         });
       },

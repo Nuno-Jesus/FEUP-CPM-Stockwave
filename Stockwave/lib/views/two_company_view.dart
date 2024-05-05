@@ -141,12 +141,12 @@ class _TwoCompanyViewState extends State<TwoCompanyView> {
                   todaySeries: firstSeries[1],
                   isSecondary: true,
               ),
-              CompanyDetailsPanelList(company: firstCompany),
               StockChart(series: firstSeries),
-              CompanyMetricsTable(
-                  firstCompany: firstCompany,
-                  secondCompany: secondCompany
-              ),
+              CompanyDetailsPanelList(company: firstCompany),
+              // CompanyMetricsTable(
+              //     firstCompany: firstCompany,
+              //     secondCompany: secondCompany
+              // ),
               const SizedBox(height: 20.0)
             ],
           ),
