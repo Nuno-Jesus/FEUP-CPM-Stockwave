@@ -45,7 +45,8 @@ class CompanyCard extends StatelessWidget {
                           textColor.withOpacity(0),
                         ]
                     )
-                ),              ),
+                ),
+              ),
               buildBottomRow(context)
             ],
           )

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stockwave/widgets/my_divider.dart';
 import 'package:stockwave/widgets/company_card.dart';
 import 'package:stockwave/widgets/company_details_panel_list.dart';
 import 'package:stockwave/widgets/stock_chart.dart';
@@ -132,36 +133,34 @@ class _TwoCompanyViewState extends State<TwoCompanyView> {
         ),
       body: SingleChildScrollView(
         child: Column(
-          children: [
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
             StockChart(series: firstSeries),
             SizedBox(
-              height: MediaQuery.of(context).size.height,
-              child: ScrollSnapList(
-                // background: Colors.green,
-                  onItemFocus: (int index) {
-                    debugPrint('Item focused: $index');
-                  },
-                  itemSize: MediaQuery.of(context).size.width,
-                  itemCount: 2,
-                  itemBuilder: (BuildContext context, int index) {
-                    return SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          CompanyCard(
-                            company: companies[index],
-                            todaySeries: firstSeries[0],
-                            isSecondary: index == 1,
-                          ),
-                          CompanyDetailsPanelList(company: companies[index]),
-                          const SizedBox(height: 20.0)
-                        ],
-                      )
-                    );
-                  }
+              height: 1000,
+              child: ListView.builder(
+                physics: const ClampingScrollPhysics(),
+                shrinkWrap: true,
+                scrollDirection: Axis.horizontal,
+                itemCount: 2,
+                itemBuilder: (BuildContext context, int index) => SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: Column(
+                    children: [
+                      CompanyCard(
+                        company: companies[index],
+                        todaySeries: firstSeries[index],
+                        isSecondary: index == 1,
+                      ),
+                      MyDivider(
+                        width: MediaQuery.of(context).size.width * 0.6,
+                        margin: const EdgeInsets.symmetric(vertical: 16),
+                      ),
+                      CompanyDetails(company: companies[index]),
+                    ],
+                  ),
                 ),
+              ),
             ),
           ],
         ),
