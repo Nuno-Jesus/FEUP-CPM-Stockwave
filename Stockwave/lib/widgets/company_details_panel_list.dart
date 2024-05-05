@@ -26,6 +26,7 @@ class CompanyDetailsPanelListState extends State<CompanyDetailsPanelList> {
     items = [
       Item(
         title: 'Key Metrics',
+        isExpanded: true,
         content: CompanyMetricsTable(
             firstCompany: widget.company,
             secondCompany: widget.company

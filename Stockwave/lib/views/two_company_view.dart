@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:stockwave/widgets/company_card.dart';
 import 'package:stockwave/widgets/company_details_panel_list.dart';
-import 'package:stockwave/widgets/key_metrics_table.dart';
 import 'package:stockwave/widgets/stock_chart.dart';
 import 'package:stockwave/models/company.dart';
 import 'package:stockwave/models/series.dart';
+import 'package:scroll_snap_list/scroll_snap_list.dart';
 
 class TwoCompanyView extends StatefulWidget {
   const TwoCompanyView({
@@ -99,17 +99,18 @@ class _TwoCompanyViewState extends State<TwoCompanyView> {
     });
   }
 
+  void onChangedColorTheme() {
+    setState(() {
+      widget.onToggleTheme();
+      currentIcon = currentIcon == Icons.dark_mode_outlined
+          ? Icons.light_mode
+          : Icons.dark_mode_outlined;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    void onChangedColorTheme() {
-      setState(() {
-        widget.onToggleTheme();
-        currentIcon = currentIcon == Icons.dark_mode_outlined
-            ? Icons.light_mode
-            : Icons.dark_mode_outlined;
-      });
-    }
+    List<Company> companies = [firstCompany, secondCompany];
 
     return Scaffold(
         appBar: AppBar(
@@ -129,28 +130,65 @@ class _TwoCompanyViewState extends State<TwoCompanyView> {
             ),
           ],
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              CompanyCard(
-                  company: firstCompany,
-                  todaySeries: firstSeries[0],
-              ),
-              CompanyCard(
-                  company: secondCompany,
-                  todaySeries: firstSeries[1],
-                  isSecondary: true,
-              ),
-              StockChart(series: firstSeries),
-              CompanyDetailsPanelList(company: firstCompany),
-              // CompanyMetricsTable(
-              //     firstCompany: firstCompany,
-              //     secondCompany: secondCompany
-              // ),
-              const SizedBox(height: 20.0)
-            ],
-          ),
-        )
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            StockChart(series: firstSeries),
+            SizedBox(
+              height: MediaQuery.of(context).size.height,
+              child: ScrollSnapList(
+                // background: Colors.green,
+                  onItemFocus: (int index) {
+                    debugPrint('Item focused: $index');
+                  },
+                  itemSize: MediaQuery.of(context).size.width,
+                  itemCount: 2,
+                  itemBuilder: (BuildContext context, int index) {
+                    return SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          CompanyCard(
+                            company: companies[index],
+                            todaySeries: firstSeries[0],
+                            isSecondary: index == 1,
+                          ),
+                          CompanyDetailsPanelList(company: companies[index]),
+                          const SizedBox(height: 20.0)
+                        ],
+                      )
+                    );
+                  }
+                ),
+            ),
+          ],
+        ),
+      )
     );
   }
 }
+
+// body: SingleChildScrollView(
+//   child: Column(
+//     children: [
+//       CompanyCard(
+//           company: firstCompany,
+//           todaySeries: firstSeries[0],
+//       ),
+//       CompanyCard(
+//           company: secondCompany,
+//           todaySeries: firstSeries[1],
+//           isSecondary: true,
+//       ),
+//       StockChart(series: firstSeries),
+//       CompanyDetailsPanelList(company: firstCompany),
+//       // CompanyMetricsTable(
+//       //     firstCompany: firstCompany,
+//       //     secondCompany: secondCompany
+//       // ),
+//       const SizedBox(height: 20.0)
+//     ],
+//   ),
+// )
