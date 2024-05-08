@@ -29,6 +29,7 @@ class _TwoCompanyViewState extends State<TwoCompanyView> {
   List<Series> secondSeries = [];
   late Company firstCompany;
   late Company secondCompany;
+  late Company selectedCompany;
   IconData currentIcon = Icons.dark_mode_outlined;
 
   @override
@@ -87,13 +88,14 @@ class _TwoCompanyViewState extends State<TwoCompanyView> {
       'icon': Icons.apple,
     });
     
-    secondCompany = const Company(metrics: {
-      'Market Cap': '2.46T',
-      'Revenue': '365.7B',
-      'Dividend Yield': '0.52%',
-      'P/E Ratio': '28.15',
-      'EPS': '5.1',
-      'Beta': '1.2',
+    secondCompany = const Company(//fill with Microsoftmetrics
+      metrics: {
+      'Market Cap': '2.98T',
+      'Revenue': '400.7B',
+      'Dividend Yield': '1.52%',
+      'P/E Ratio': '29.15',
+      'EPS': '4.1',
+      'Beta': '2.2',
     },
     details: {
       'name': 'Microsoft Corporation',
@@ -101,6 +103,8 @@ class _TwoCompanyViewState extends State<TwoCompanyView> {
       'description' : 'Microsoft Corporation develops, licenses, and supports software, services, devices, and solutions worldwide. Its Productivity and Business Processes segment offers Office, Exchange, SharePoint, Microsoft Teams, Office 365 Security and Compliance, and Skype for Business, as well as related Client Access Licenses (CAL); Skype, Outlook.com, and OneDrive; LinkedIn that includes Talent, Learning, Sales, and Marketing solutions, as well as premium subscriptions; and Dynamics 365, a set of cloud-based and on-premises business solutions for small and medium businesses, large organizations, and divisions of enterprises. Its Intelligent Cloud segment licenses SQL and Windows Servers, Visual Studio, System Center, and related CALs; GitHub that provides a collaboration platform and code hosting service for developers; and Azure, a cloud platform. It also provides support services and Microsoft consulting services to assist customers in developing, deploying, and managing Microsoft server and desktop solutions; and training and certification to developers and IT professionals on various Microsoft products. Its More Personal Computing segment offers Windows OEM licensing and other non-volume licensing of the Windows operating system; Windows Commercial comprising volume licensing of the Windows operating system, Windows cloud services, and other Windows commercial offerings; patent licensing; Windows Internet of Things; and MSN advertising. It also provides Microsoft Surface, PC accessories, and other intelligent devices; Gaming, including Xbox hardware, and Xbox software and services; video games and third-party video game royalties; and Search, including Bing and Microsoft advertising. It sells its products through OEMs, distributors, and resellers; and directly through digital marketplaces, online stores, and retail stores. The company was founded in 1975 and is headquartered in Redmond, Washington.',
       'icon': Icons.window_sharp,
     });
+
+    selectedCompany = firstCompany;
   }
 
   void onChangedColorTheme() {
@@ -136,62 +140,43 @@ class _TwoCompanyViewState extends State<TwoCompanyView> {
         ),
       body: SingleChildScrollView(
         child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
+          children: [
             StockChart(series: firstSeries),
+            MyDivider(
+              width: MediaQuery.of(context).size.width * 0.6,
+              margin: const EdgeInsets.only(bottom: 16),
+            ),
             SizedBox(
-              height: MediaQuery.of(context).size.height,
-              child: ListView.builder(
-                physics: const ClampingScrollPhysics(),
-                shrinkWrap: true,
+              height: 155,
+              child: ScrollSnapList(
+                onItemFocus: (int index) {
+                  debugPrint('Item $index has come into view');
+                  setState(() {
+                    selectedCompany = companies[index];
+                  });
+                },
+                
+                itemSize: MediaQuery.of(context).size.width,
+                itemBuilder: (BuildContext context, int index) {
+                  return SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: CompanyCard(
+                      company: companies[index],
+                      todaySeries: index == 0 ? firstSeries[0] : secondSeries[0],
+                      isSecondary: index == 1,
+                    ),
+                  );
+                },
+                itemCount: companies.length,
                 scrollDirection: Axis.horizontal,
-                itemCount: 2,
-                itemBuilder: (BuildContext context, int index) => SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  child: Column(
-                    children: [
-                      CompanyCard(
-                        company: companies[index],
-                        todaySeries: firstSeries[index],
-                        isSecondary: index == 1,
-                      ),
-                      MyDivider(
-                        width: MediaQuery.of(context).size.width * 0.6,
-                        margin: const EdgeInsets.symmetric(vertical: 16),
-                      ),
-                      CompanyMetricsTable(company: companies[index]),
-                      CompanyGeneralInformation(company: companies[index])
-                    ],
-                  ),
-                ),
               ),
             ),
-          ],
+            CompanyMetricsTable(company: selectedCompany),
+            CompanyGeneralInformation(company: selectedCompany),
+            SizedBox(height: 20),
+          ]
         ),
       )
     );
   }
 }
-
-// body: SingleChildScrollView(
-//   child: Column(
-//     children: [
-//       CompanyCard(
-//           company: firstCompany,
-//           todaySeries: firstSeries[0],
-//       ),
-//       CompanyCard(
-//           company: secondCompany,
-//           todaySeries: firstSeries[1],
-//           isSecondary: true,
-//       ),
-//       StockChart(series: firstSeries),
-//       CompanyDetailsPanelList(company: firstCompany),
-//       // CompanyMetricsTable(
-//       //     firstCompany: firstCompany,
-//       //     secondCompany: secondCompany
-//       // ),
-//       const SizedBox(height: 20.0)
-//     ],
-//   ),
-// )
