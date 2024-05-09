@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stockwave/models/company.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 class CompanyMetricsTable extends StatefulWidget {
   final Company company;
@@ -14,31 +15,65 @@ class CompanyMetricsTable extends StatefulWidget {
 }
 
 class _CompanyMetricsTableState extends State<CompanyMetricsTable> {
+
+
+
   @override
   Widget build(BuildContext context) {
     return ListTile(
       contentPadding: const EdgeInsets.symmetric(horizontal: 24.0),
-      title: const Text('Company Metrics', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+      title: const Padding(
+        padding: EdgeInsets.only(bottom: 5),
+        child: Text('Company Metrics', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+      ),
       subtitle: DataTable(
-        dividerThickness: 0.1,
+        dividerThickness: double.minPositive,
+        headingRowHeight: 0,
+        horizontalMargin: 0,
+        columnSpacing: 20,
         headingTextStyle: const TextStyle(
           fontWeight: FontWeight.bold,
           fontStyle: FontStyle.normal,
           fontSize: 16,
         ),
         columns: const <DataColumn>[
-          DataColumn(label: Expanded(child: Text('Metric'))),
-          DataColumn(label: Expanded(child: Text('Value'))),
+          DataColumn(label: Expanded(child: Text(''))),
+          DataColumn(label: Expanded(child: Text(''))),
         ],
-        rows: widget.company.metrics.keys.map((metric) {
-          return DataRow(
-            cells: [
-              DataCell(Text(metric)),
-              DataCell(Text(widget.company.metrics[metric]!)),
-            ],
-          );
-        }).toList(),
+        rows: _buildRows(),
       ),
+    );
+  }
+
+  List<DataRow> _buildRows() {
+    List<DataRow> rows = [];
+    List<MapEntry<String, String>> allMetrics =
+      widget.company.metrics.entries.map((e) => e).toList();
+
+    for (int i = 0; i < allMetrics.length; i += 2) {
+      rows.add(
+        DataRow(cells: [
+          DataCell(_buildMetricRow(context, allMetrics[i].key, allMetrics[i].value)),
+          DataCell(_buildMetricRow(context, allMetrics[i + 1].key, allMetrics[i + 1].value)),
+        ])
+      );
+    }
+    return rows;
+  }
+
+  Row _buildMetricRow(BuildContext context, String key, String value) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+            key.toUpperCase(),
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).colorScheme.onBackground.withOpacity(0.5)
+            )),
+        Text(value, style: const TextStyle(fontSize: 16))
+      ],
     );
   }
 }

@@ -142,10 +142,6 @@ class _TwoCompanyViewState extends State<TwoCompanyView> {
         child: Column(
           children: [
             StockChart(series: firstSeries),
-            MyDivider(
-              width: MediaQuery.of(context).size.width * 0.6,
-              margin: const EdgeInsets.only(bottom: 16),
-            ),
             SizedBox(
               height: 155,
               child: ScrollSnapList(
@@ -170,6 +166,10 @@ class _TwoCompanyViewState extends State<TwoCompanyView> {
                 itemCount: companies.length,
                 scrollDirection: Axis.horizontal,
               ),
+            ),
+            MyDivider(
+              width: MediaQuery.of(context).size.width * 0.75,
+              margin: const EdgeInsets.only(top: 20, bottom: 9),
             ),
             CompanyMetricsTable(company: selectedCompany),
             CompanyGeneralInformation(company: selectedCompany),

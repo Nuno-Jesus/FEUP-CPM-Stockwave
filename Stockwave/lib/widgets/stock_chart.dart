@@ -45,7 +45,7 @@ class _StockChartState extends State<StockChart> {
                     fontFamily: GoogleFonts.fredoka().fontFamily,
                 ),
                 borderWidth: 0,
-                format: 'Value: point.y\nDate: point.x'
+                format: 'Close: point.y\nDate: point.x'
             )
         ),
         series: <CartesianSeries>[
