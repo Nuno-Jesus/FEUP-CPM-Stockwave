@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:stockwave/widgets/company_card.dart';
 import 'package:stockwave/widgets/company_metrics_table.dart';
@@ -5,6 +7,7 @@ import 'package:stockwave/widgets/stock_chart.dart';
 import 'package:stockwave/models/company.dart';
 import 'package:stockwave/models/series.dart';
 
+import '../api.dart';
 import '../widgets/company_general_information.dart';
 import '../widgets/my_divider.dart';
 
@@ -27,21 +30,14 @@ class _OneCompanyViewState extends State<OneCompanyView> {
   late Company company;
   IconData currentIcon = Icons.dark_mode_outlined;
 
-  @override
-  void initState() {
-    super.initState();
-
-    _loadSeries();
-    _loadCompanyMetrics();
-  }
-
   Future _loadSeries() async {
-    // var response = await fetchDailySeries(firstCompany['symbol']);
+    series.clear();
+    // var response = await fetchDailySeries(widget.chosenCompanySymbol);
     // var jsonData = jsonDecode(response.body);
-
+    //
     // debugPrint('Loaded JSON: $jsonData');
-
-    // for (var entry in jsonData['Time Series (Daily)']) {
+    //
+    // for (var entry in jsonData['Time Series (Daily)'].entries) {
     //   series.add(Series.fromJson(entry.key, entry.value));
     // }
     series.add(Series(open: 40.0, close: 20.0, high: 3.0, low: 0.5, volume: 1000.0, date: '2022-01-10'));
@@ -75,52 +71,64 @@ class _OneCompanyViewState extends State<OneCompanyView> {
     });
   }
 
+  void onChangedColorTheme() {
+    setState(() {
+      widget.onToggleTheme();
+      currentIcon = currentIcon == Icons.dark_mode_outlined
+          ? Icons.light_mode
+          : Icons.dark_mode_outlined;
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
-    void onChangedColorTheme() {
-      setState(() {
-        widget.onToggleTheme();
-        currentIcon = currentIcon == Icons.dark_mode_outlined
-            ? Icons.light_mode
-            : Icons.dark_mode_outlined;
-      });
-    }
 
-    return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.primary,
-          title: Text(company['name']),
-          centerTitle: true,
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () => Navigator.pop(context),
-          ),
-          actions: [
-            IconButton(
-              icon: Icon(currentIcon),
-              onPressed: onChangedColorTheme,
-            ),
-          ],
-        ),
-        body: SingleChildScrollView(
-          child: Column(
-              children: [
-                StockChart(series: series),
-                CompanyCard(
-                  company: company,
-                  todaySeries: series[0],
+    return FutureBuilder(
+      future: Future.wait([_loadSeries(), _loadCompanyMetrics()]),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          return Scaffold(
+              appBar: AppBar(
+                backgroundColor: Theme.of(context).colorScheme.primary,
+                title: Text(company['name']),
+                centerTitle: true,
+                leading: IconButton(
+                  icon: const Icon(Icons.arrow_back),
+                  onPressed: () => Navigator.pop(context),
                 ),
-                MyDivider(
-                  width: MediaQuery.of(context).size.width * 0.75,
-                  margin: const EdgeInsets.only(top: 20, bottom: 9),
+                actions: [
+                  IconButton(
+                    icon: Icon(currentIcon),
+                    onPressed: onChangedColorTheme,
+                  ),
+                ],
+              ),
+              body: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    StockChart(firstSeries: series),
+                    CompanyCard(
+                      company: company,
+                      todaySeries: series[0],
+                    ),
+                    MyDivider(
+                      width: MediaQuery.of(context).size.width * 0.75,
+                      margin: const EdgeInsets.only(top: 20, bottom: 9),
+                    ),
+                    CompanyMetricsTable(company: company),
+                    CompanyGeneralInformation(company: company),
+                    const SizedBox(height: 20),
+                  ],
                 ),
-                CompanyMetricsTable(company: company),
-                CompanyGeneralInformation(company: company),
-                SizedBox(height: 20),
-              ]
-          ),
-        )
+              )
+          );
+        } else {
+          return Center(
+            child: CircularProgressIndicator(color: Theme.of(context).colorScheme.primaryContainer),
+          );
+        }
+      },
     );
   }
 }

@@ -116,7 +116,7 @@ packages:
     source: hosted
     version: "4.0.2"
   intl:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: intl
       sha256: d6f56758b7d3014a48af9701c085700aac781a92a87a62b1333b46d8879661cf
@@ -251,14 +251,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.8"
-  readmore:
-    dependency: "direct main"
-    description:
-      name: readmore
-      sha256: e8fca2bd397b86342483b409e2ec26f06560a5963aceaa39b27f30722b506187
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.0.0"
   scroll_snap_list:
     dependency: "direct main"
     description:
@@ -308,10 +300,10 @@ packages:
     dependency: "direct main"
     description:
       name: syncfusion_flutter_charts
-      sha256: "755dc3dee2afebba9e7ac0355fe89c0e6084f3c90b736a940c8990607c500160"
+      sha256: "65c7e02d23cc87d4eaee318f5062d78cb711eb7b9d23f3a5fcda62203a771fbe"
       url: "https://pub.dev"
     source: hosted
-    version: "25.2.3"
+    version: "25.2.3+1"
   syncfusion_flutter_core:
     dependency: transitive
     description:

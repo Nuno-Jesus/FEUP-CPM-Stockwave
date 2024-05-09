@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:stockwave/widgets/company_metrics_table.dart';
 import 'package:stockwave/widgets/my_divider.dart';
@@ -19,7 +21,7 @@ class TwoCompanyView extends StatefulWidget {
   final VoidCallback onToggleTheme;
   final Map<String, dynamic> first;
   final Map<String, dynamic> second;
-  
+
   @override
   State<TwoCompanyView> createState() => _TwoCompanyViewState();
 }
@@ -49,6 +51,8 @@ class _TwoCompanyViewState extends State<TwoCompanyView> {
     // for (var entry in jsonData['Time Series (Daily)']) {
     //   series.add(Series.fromJson(entry.key, entry.value));
     // }
+    firstSeries.clear();
+    secondSeries.clear();
     firstSeries.add(const Series(open: 40.0, close: 20.0, high: 3.0, low: 0.5, volume: 1000.0, date: '2022-01-10'));
     firstSeries.add(const Series(open: 23.0, close: 33.0, high: 4.0, low: 1.5, volume: 2000.0, date: '2022-01-11'));
     firstSeries.add(const Series(open: 15.0, close: 12.0, high: 5.0, low: 2.5, volume: 3000.0, date: '2022-01-12'));
@@ -58,15 +62,15 @@ class _TwoCompanyViewState extends State<TwoCompanyView> {
     firstSeries.add(const Series(open: 25.0, close: 13.0, high: 9.0, low: 6.5, volume: 7000.0, date: '2022-01-16'));
     firstSeries.add(const Series(open: 64.0, close: 35.0, high: 10.0, low: 7.5, volume: 8000.0, date: '2022-01-17'));
 
-    secondSeries.add(const Series(open: 40.0, close: 20.0, high: 3.0, low: 0.5, volume: 1000.0, date: '2022-01-10'));
-    secondSeries.add(const Series(open: 23.0, close: 33.0, high: 4.0, low: 1.5, volume: 2000.0, date: '2022-01-11'));
-    secondSeries.add(const Series(open: 15.0, close: 12.0, high: 5.0, low: 2.5, volume: 3000.0, date: '2022-01-12'));
-    secondSeries.add(const Series(open: 66.0, close: 50.0, high: 6.0, low: 3.5, volume: 4000.0, date: '2022-01-13'));
-    secondSeries.add(const Series(open: 78.0, close: 55.0, high: 7.0, low: 4.5, volume: 5000.0, date: '2022-01-14'));
-    secondSeries.add(const Series(open: 32.0, close: 60.0, high: 8.0, low: 5.5, volume: 6000.0, date: '2022-01-15'));
-    secondSeries.add(const Series(open: 25.0, close: 13.0, high: 9.0, low: 6.5, volume: 7000.0, date: '2022-01-16'));
-    secondSeries.add(const Series(open: 64.0, close: 35.0, high: 10.0, low: 7.5, volume: 8000.0, date: '2022-01-17'));
-
+    //Generate the secondSeries with different close values
+    secondSeries = firstSeries.map((e) => Series(
+      open: e.open,
+      close: Random.secure().nextDouble() * 100,
+      high: e.high,
+      low: e.low,
+      volume: e.volume,
+      date: e.date
+    )).toList();
 
     debugPrint('Loaded series: ${firstSeries.length}');
     debugPrint(firstSeries[0].toString());
@@ -88,7 +92,7 @@ class _TwoCompanyViewState extends State<TwoCompanyView> {
       'icon': Icons.apple,
     });
     
-    secondCompany = const Company(//fill with Microsoftmetrics
+    secondCompany = const Company(
       metrics: {
       'Market Cap': '2.98T',
       'Revenue': '400.7B',
@@ -139,7 +143,7 @@ class _TwoCompanyViewState extends State<TwoCompanyView> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            StockChart(series: firstSeries),
+            StockChart(firstSeries: firstSeries, secondSeries: secondSeries),
             SizedBox(
               height: 155,
               child: ScrollSnapList(
