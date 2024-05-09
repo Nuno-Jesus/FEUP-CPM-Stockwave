@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:stockwave/views/one_company_view.dart';
 import 'package:stockwave/views/two_company_view.dart';
 
+import '../api.dart';
+
 class CompanyListView extends StatefulWidget{
   const CompanyListView({
     super.key,
@@ -15,12 +17,11 @@ class CompanyListView extends StatefulWidget{
 }
 
 class _CompanyListViewState extends State<CompanyListView> {
-  List<int> selectedIndexes = [];
+  List<int> selectedCompanies = [];
 
   @override
   Widget build(BuildContext context){
-    List<String> companies  = ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA', 'FB', 'NVDA', 'PYPL', 'ADBE', 'INTC'];
-
+    List<MapEntry<String, IconData>> companiesList = companies.entries.toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -30,37 +31,37 @@ class _CompanyListViewState extends State<CompanyListView> {
         itemCount: 10,
         itemBuilder: (context, index) {
           return ListTile(
-            title: Text(companies[index]),
+            title: Text(companiesList[index].key),
             onTap: () {
               setState(() {
-                if (selectedIndexes.contains(index)) {
-                  selectedIndexes.remove(index);
-                } else if (selectedIndexes.length < 2){
-                  selectedIndexes.add(index);
+                if (selectedCompanies.contains(index)) {
+                  selectedCompanies.remove(index);
+                } else if (selectedCompanies.length < 2){
+                  selectedCompanies.add(index);
                 }
               });
             },
-            selected: selectedIndexes.contains(index),
+            selected: selectedCompanies.contains(index),
             selectedTileColor: Colors.blue.withOpacity(0.5),
           );
         },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: (){
-          if (selectedIndexes.isEmpty) {
+          if (selectedCompanies.isEmpty) {
             return ;
           }
-          else if (selectedIndexes.length == 1) {
+          else if (selectedCompanies.length == 1) {
             Navigator.push(context,
               MaterialPageRoute(
                 builder: (context) => OneCompanyView(
                   onToggleTheme: widget.onToggleTheme,
-                  chosenCompanySymbol: companies[selectedIndexes[0]],
+                  chosenCompanySymbol: companiesList[selectedCompanies[0]].key,
                 ),
               ),
             );
           }
-          else if (selectedIndexes.length == 2) {
+          else if (selectedCompanies.length == 2) {
             Navigator.push(context,
               MaterialPageRoute(
                 builder: (context) => TwoCompanyView(
