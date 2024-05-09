@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stockwave/theme.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:stockwave/views/company_list_view.dart';
 import 'package:stockwave/views/two_company_view.dart';
 
 void main() {
@@ -38,17 +39,7 @@ class _MyAppState extends State<MyApp> {
         colorScheme: darkColorTheme,
       ),
       themeMode: themeMode,
-      home: TwoCompanyView(
-        onToggleTheme: _toggleTheme,
-        first: const {
-          'symbol': 'AAPL',
-          'icon': Icons.apple,
-        },
-        second: const {
-          'symbol': 'MSFT',
-          'icon': Icons.desktop_windows,
-        },
-      ),
+      home: CompanyListView(onToggleTheme: _toggleTheme),
     );
   }
 }

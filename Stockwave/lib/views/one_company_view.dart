@@ -5,16 +5,19 @@ import 'package:stockwave/widgets/stock_chart.dart';
 import 'package:stockwave/models/company.dart';
 import 'package:stockwave/models/series.dart';
 
+import '../widgets/company_general_information.dart';
+import '../widgets/my_divider.dart';
+
 class OneCompanyView extends StatefulWidget {
   const OneCompanyView({
     super.key, 
     required this.onToggleTheme,
-    required this.companyDetails,
+    required this.chosenCompanySymbol,
   });
 
   final VoidCallback onToggleTheme;
-  final Map<String, dynamic> companyDetails;
-  
+  final String chosenCompanySymbol;
+
   @override
   State<OneCompanyView> createState() => _OneCompanyViewState();
 }
@@ -67,6 +70,7 @@ class _OneCompanyViewState extends State<OneCompanyView> {
     details: {
       'name': 'Apple Inc.',
       'symbol': 'AAPL',
+      'description' : 'Apple Inc. designs, manufactures, and markets smartphones, personal computers, tablets, wearables, and accessories worldwide. It also sells various related services. The company offers iPhone, a line of smartphones; Mac, a line of personal computers; iPad, a line of multi-purpose tablets; and wearables, home, and accessories comprising AirPods, Apple TV, Apple Watch, Beats products, HomePod, iPod touch, and other Apple-branded and third-party accessories. It also provides AppleCare support services; cloud services store services; and operates various platforms, including the App Store, that allow customers to discover and download applications and digital content, such as books, music, video, games, and podcasts. In addition, the company offers various services, such as Apple Arcade, a game subscription service; Apple Music, which offers users a curated listening experience with on-demand radio stations; Apple News+, a subscription news and magazine service; Apple TV+, which offers exclusive original content; Apple Card, a co-branded credit card; and Apple Pay, a cashless payment service, as well as licenses its intellectual property. The company serves consumers, and small and mid-sized businesses; and the education, enterprise, and government markets. It sells and delivers third-party applications for its products through the App Store. The company also sells its products through its retail and online stores, and direct sales force; and third-party cellular network carriers, wholesalers, retailers, and resellers. Apple Inc. was founded in 1977 and is headquartered in Cupertino, California.',
       'icon': Icons.apple,
     });
   }
@@ -86,13 +90,11 @@ class _OneCompanyViewState extends State<OneCompanyView> {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.primary,
-          title: Text('${company['name']}'),
+          title: Text(company['name']),
           centerTitle: true,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              debugPrint('Back button pressed');
-            },
+            onPressed: () => Navigator.pop(context),
           ),
           actions: [
             IconButton(
@@ -103,16 +105,20 @@ class _OneCompanyViewState extends State<OneCompanyView> {
         ),
         body: SingleChildScrollView(
           child: Column(
-            children: [
-              CompanyCard(
+              children: [
+                StockChart(series: series),
+                CompanyCard(
                   company: company,
                   todaySeries: series[0],
-              ),
-
-              StockChart(series: series),
-
-              const SizedBox(height: 20.0)
-            ],
+                ),
+                MyDivider(
+                  width: MediaQuery.of(context).size.width * 0.75,
+                  margin: const EdgeInsets.only(top: 20, bottom: 9),
+                ),
+                CompanyMetricsTable(company: company),
+                CompanyGeneralInformation(company: company),
+                SizedBox(height: 20),
+              ]
           ),
         )
     );

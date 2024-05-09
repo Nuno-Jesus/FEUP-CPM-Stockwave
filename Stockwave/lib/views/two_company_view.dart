@@ -127,9 +127,7 @@ class _TwoCompanyViewState extends State<TwoCompanyView> {
           centerTitle: true,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              debugPrint('Back button pressed');
-            },
+            onPressed: () => Navigator.pop(context)
           ),
           actions: [
             IconButton(
@@ -173,7 +171,7 @@ class _TwoCompanyViewState extends State<TwoCompanyView> {
             ),
             CompanyMetricsTable(company: selectedCompany),
             CompanyGeneralInformation(company: selectedCompany),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
           ]
         ),
       )
