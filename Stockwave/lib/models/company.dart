@@ -7,11 +7,25 @@ class Company {
     required this.details,
   });
 
+  const Company.empty() : metrics = const {}, details = const {};
+
   dynamic operator [](String key){
     if (metrics.containsKey(key)) {
       return metrics[key]!;
     } else {
       return details[key]!;
     }
+  }
+
+  @override
+  String toString() {
+    String result = '';
+    metrics.forEach((key, value) {
+      result += '$key: $value\n';
+    });
+    details.forEach((key, value) {
+      result += '$key: $value\n';
+    });
+    return 'Company: $result';
   }
 }
