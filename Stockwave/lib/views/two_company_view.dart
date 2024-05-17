@@ -5,7 +5,7 @@ import 'package:stockwave/widgets/company_metrics_table.dart';
 import 'package:stockwave/widgets/my_divider.dart';
 import 'package:stockwave/widgets/company_card.dart';
 import 'package:stockwave/widgets/company_general_information.dart';
-import 'package:stockwave/widgets/company_stock_chart.dart';
+import 'package:stockwave/widgets/company_spline_stock_chart.dart';
 import 'package:stockwave/models/company.dart';
 import 'package:stockwave/models/series.dart';
 import 'package:scroll_snap_list/scroll_snap_list.dart';
@@ -104,7 +104,7 @@ class _TwoCompanyViewState extends State<TwoCompanyView> {
         body: SingleChildScrollView(
           child: Column(
               children: [
-                CompanyStockChart(
+                CompanySplineStockChart(
                     firstSeries: firstSeries,
                     firstCompany: firstCompany,
                     secondSeries: secondSeries,

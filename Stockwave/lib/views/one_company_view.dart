@@ -1,9 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:stockwave/widgets/company_candle_stock_chart.dart';
 import 'package:stockwave/widgets/company_card.dart';
 import 'package:stockwave/widgets/company_metrics_table.dart';
-import 'package:stockwave/widgets/company_stock_chart.dart';
+import 'package:stockwave/widgets/company_spline_stock_chart.dart';
 import 'package:stockwave/models/company.dart';
 import 'package:stockwave/models/series.dart';
 
@@ -30,12 +31,14 @@ class _OneCompanyViewState extends State<OneCompanyView> {
   late Future<List<dynamic>> futures;
   List<Series> series = [];
   Company company = const Company.empty();
-  IconData currentIcon = Icons.dark_mode_outlined;
+  
+  IconData themeIcon = Icons.dark_mode_outlined;
+  IconData chartIcon = Icons.show_chart_outlined;
 
   @override
   void initState() {
     super.initState();
-    futures =  Future.wait([
+    futures = Future.wait([
       fetchCompanyOverview(widget.chosenSymbol),
       fetchDailySeries(widget.chosenSymbol)
     ]);
@@ -44,9 +47,17 @@ class _OneCompanyViewState extends State<OneCompanyView> {
   void onChangedColorTheme() {
     setState(() {
       widget.onToggleTheme();
-      currentIcon = currentIcon == Icons.dark_mode_outlined
+      themeIcon = themeIcon == Icons.dark_mode_outlined
           ? Icons.light_mode
           : Icons.dark_mode_outlined;
+    });
+  }
+  
+  void onChangedChartType() {
+    setState(() {
+      chartIcon = chartIcon == Icons.candlestick_chart_outlined
+          ? Icons.show_chart_outlined
+          : Icons.candlestick_chart_outlined;
     });
   }
 
@@ -61,15 +72,12 @@ class _OneCompanyViewState extends State<OneCompanyView> {
           );
         }
         else {
-          debugPrint('Snapshot data ${snapshot.data?[0].toString()}');
-
           company = snapshot.data?[0];
           series = snapshot.data?[1];
-
           return Scaffold(
               appBar: AppBar(
                 backgroundColor: Theme.of(context).colorScheme.primary,
-                title: Text(snapshot.data?[0]['name']),
+                title: Text(company['name']),
                 centerTitle: true,
                 leading: IconButton(
                   icon: const Icon(Icons.arrow_back),
@@ -77,7 +85,11 @@ class _OneCompanyViewState extends State<OneCompanyView> {
                 ),
                 actions: [
                   IconButton(
-                    icon: Icon(currentIcon),
+                    icon: Icon(chartIcon),
+                    onPressed: onChangedChartType,
+                  ),
+                  IconButton(
+                    icon: Icon(themeIcon),
                     onPressed: onChangedColorTheme,
                   ),
                 ],
@@ -85,7 +97,9 @@ class _OneCompanyViewState extends State<OneCompanyView> {
               body: SingleChildScrollView(
                 child: Column(
                   children: [
-                    CompanyStockChart(firstSeries: series, firstCompany: company),
+                    chartIcon == Icons.show_chart_outlined
+                        ? CompanyCandleStockChart(series: series, company: company)
+                        : CompanySplineStockChart(firstSeries: series, firstCompany: company),
                     CompanyCard(
                       company: company,
                       todaySeries: series[0],

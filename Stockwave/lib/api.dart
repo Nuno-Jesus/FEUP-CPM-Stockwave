@@ -68,7 +68,7 @@ Future<List<Series>> fetchDailySeries(String symbol) async {
     }
     return (series);
   } else {
-    throw Exception('Failed to load series');
+    return [];
   }
 }
 
@@ -93,8 +93,9 @@ Future<Company> fetchCompanyOverview(String symbol) async {
       '&symbol=$symbol'
       '&apikey=$apiKey'));
 
-  debugPrint('Response: ${response.body}');
+  debugPrint('URL: ${host}/query?function=OVERVIEW&symbol=${symbol}&apikey=${apiKey}')
   debugPrint('Response Status Code ${response.statusCode}');
+  debugPrint('Response: ${response.body}');
   if (response.statusCode == 200) {
     final data = jsonDecode(response.body);
 
@@ -116,7 +117,7 @@ Future<Company> fetchCompanyOverview(String symbol) async {
 
     return company;
   } else {
-    throw Exception('Failed to load company overview');
+    return const Company.empty();
   }
 }
 

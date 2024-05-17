@@ -13,8 +13,8 @@ import '../api.dart';
 import '../models/company.dart';
 import '../models/series.dart';
 
-class CompanyStockChart extends StatefulWidget {
-  const CompanyStockChart({
+class CompanySplineStockChart extends StatefulWidget {
+  const CompanySplineStockChart({
     super.key,
     required this.firstSeries,
     required this.firstCompany,
@@ -28,10 +28,10 @@ class CompanyStockChart extends StatefulWidget {
   final Company secondCompany;
 
   @override
-  State<CompanyStockChart> createState() => _CompanyStockChartState();
+  State<CompanySplineStockChart> createState() => _CompanySplineStockChartState();
 }
 
-class _CompanyStockChartState extends State<CompanyStockChart> {
+class _CompanySplineStockChartState extends State<CompanySplineStockChart> {
   @override
   Widget build(BuildContext context) {
       return _buildCartesianChart(context);
@@ -90,7 +90,6 @@ class _CompanyStockChartState extends State<CompanyStockChart> {
               yValueMapper: (Series data, _) => data.close,
               animationDuration: 500,
             ),
-
         ]
     );
   }
@@ -99,7 +98,6 @@ class _CompanyStockChartState extends State<CompanyStockChart> {
     return DateTimeAxis(
       isVisible: true,
       majorTickLines: const MajorTickLines(size: 0),
-      // majorGridLines: const MajorGridLines(width: 0),
       edgeLabelPlacement: EdgeLabelPlacement.shift,
       labelStyle: TextStyle(
         fontSize: 10,
