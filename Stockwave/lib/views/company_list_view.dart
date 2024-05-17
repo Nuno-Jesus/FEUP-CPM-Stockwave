@@ -3,6 +3,7 @@ import 'package:stockwave/views/one_company_view.dart';
 import 'package:stockwave/views/two_company_view.dart';
 
 import '../api.dart';
+import '../models/company.dart';
 
 class CompanyListView extends StatefulWidget{
   const CompanyListView({
@@ -45,7 +46,6 @@ class _CompanyListViewState extends State<CompanyListView> {
               context: context,
               builder: (context) {
                 return AlertDialog(
-                  // title: Text('Help'),
                   icon: Icon(Icons.info_outline, color: Theme.of(context).colorScheme.onBackground),
                   content: const Text('Select at most 2 companies to analyse.'),
                 );
@@ -97,45 +97,55 @@ class _CompanyListViewState extends State<CompanyListView> {
         ]
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: SizedBox(
-        width: MediaQuery.of(context).size.width * 0.4,
-        height: 50,
-        child: Visibility(
-          visible: selectedCompanies.isNotEmpty,
-          child: FloatingActionButton(
-            backgroundColor: Theme.of(context).colorScheme.tertiary,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
-            tooltip: 'Submit companies into analysis.',
-            onPressed: (){
-              if (selectedCompanies.isEmpty) {
-                return ;
-              }
-              else if (selectedCompanies.length == 1) {
-                Navigator.push(context,
-                  MaterialPageRoute(
-                    builder: (context) => OneCompanyView(
-                      onToggleTheme: widget.onToggleTheme,
-                      chosenCompanySymbol: companiesList[selectedCompanies[0]].key,
-                    ),
+      floatingActionButton: _buildFloatingActionButton(context, companiesList),
+    );
+  }
+
+  Widget _buildFloatingActionButton(BuildContext context, List<MapEntry<String, String>> companiesList) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width * 0.6,
+      height: 50,
+      child: Visibility(
+        visible: selectedCompanies.isNotEmpty,
+        child: FloatingActionButton(
+          backgroundColor: Theme.of(context).colorScheme.tertiary,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+          tooltip: 'Submit companies into analysis.',
+          onPressed: (){
+            if (selectedCompanies.isEmpty) {
+              return ;
+            }
+            else if (selectedCompanies.length == 1) {
+              Navigator.push(context,
+                MaterialPageRoute(
+                  builder: (context) => OneCompanyView(
+                    onToggleTheme: widget.onToggleTheme,
+                    chosenSymbol: companiesList[selectedCompanies[0]].key,
                   ),
-                );
-              }
-              else if (selectedCompanies.length == 2) {
-                Navigator.push(context,
-                  MaterialPageRoute(
-                    builder: (context) => TwoCompanyView(
-                      onToggleTheme: widget.onToggleTheme,
-                      first: {},
-                      second: {},
-                    ),
+                ),
+              );
+            }
+            else if (selectedCompanies.length == 2) {
+              Navigator.push(context,
+                MaterialPageRoute(
+                  builder: (context) => TwoCompanyView(
+                    onToggleTheme: widget.onToggleTheme,
+                    firstChosenSymbol: companiesList[selectedCompanies[0]].key,
+                    secondChosenSymbol: companiesList[selectedCompanies[1]].key,
                   ),
-                );
-              }
-            },
-            child: const Text('Analyse',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)
+                ),
+              );
+            }
+          },
+          child: Text(
+            'Analyse ${selectedCompanies.length == 1 ? companiesList[selectedCompanies[0]].key : ''}'
+                '${selectedCompanies.length == 2 ? '${companiesList[selectedCompanies[0]].key} & '
+                '${companiesList[selectedCompanies[1]].key}' : ''}',
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.background,
+              fontSize: 16,
             ),
-          ),
+          )
         ),
       ),
     );

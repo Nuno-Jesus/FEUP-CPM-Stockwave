@@ -107,10 +107,10 @@ class CompanyCard extends StatelessWidget {
                       company['name'],
                       style: TextStyle(
                           color: textColor.withOpacity(0.7),
-                          fontSize: 14,
+                          fontSize: 12,
                           fontWeight: FontWeight.w400
                       ),
-                      overflow: TextOverflow.clip,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                 )
@@ -130,8 +130,6 @@ class CompanyCard extends StatelessWidget {
               ),
             ),
             Text(
-              //ISTO AQUI PODE SER CALCULADO COM A DIFERENÇA ENTRE O CLOSE E O OPEN DIVIDIDO PELO OPEN
-              // "(+7,01%) USD",
               "(${differential > 0 ? "+" : ""}${differential.toStringAsFixed(2)}%) USD",
               style: TextStyle(
                   color: (differential > 0 ? const Color(0xFF42CFA2) : const Color(0xFFD32F2F)),

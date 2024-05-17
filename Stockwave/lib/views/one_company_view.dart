@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:stockwave/widgets/company_card.dart';
 import 'package:stockwave/widgets/company_metrics_table.dart';
-import 'package:stockwave/widgets/stock_chart.dart';
+import 'package:stockwave/widgets/company_stock_chart.dart';
 import 'package:stockwave/models/company.dart';
 import 'package:stockwave/models/series.dart';
 
@@ -16,19 +16,19 @@ class OneCompanyView extends StatefulWidget {
   const OneCompanyView({
     super.key, 
     required this.onToggleTheme,
-    required this.chosenCompanySymbol,
+    required this.chosenSymbol,
   });
 
   final VoidCallback onToggleTheme;
-  final String chosenCompanySymbol;
+  final String chosenSymbol;
 
   @override
   State<OneCompanyView> createState() => _OneCompanyViewState();
 }
 
 class _OneCompanyViewState extends State<OneCompanyView> {
-  List<Series> series = [];
   late Future<List<dynamic>> futures;
+  List<Series> series = [];
   Company company = const Company.empty();
   IconData currentIcon = Icons.dark_mode_outlined;
 
@@ -36,8 +36,8 @@ class _OneCompanyViewState extends State<OneCompanyView> {
   void initState() {
     super.initState();
     futures =  Future.wait([
-      fetchCompanyOverview(widget.chosenCompanySymbol),
-      fetchDailySeries(widget.chosenCompanySymbol)
+      fetchCompanyOverview(widget.chosenSymbol),
+      fetchDailySeries(widget.chosenSymbol)
     ]);
   }
 
@@ -85,7 +85,7 @@ class _OneCompanyViewState extends State<OneCompanyView> {
               body: SingleChildScrollView(
                 child: Column(
                   children: [
-                    StockChart(firstSeries: series),
+                    CompanyStockChart(firstSeries: series, firstCompany: company),
                     CompanyCard(
                       company: company,
                       todaySeries: series[0],

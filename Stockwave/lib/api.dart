@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -21,20 +23,23 @@ const Map<String, String> companies = {
   'INTC': 'Intel Corporation',
   'HPQ': 'HP Inc.',
   'ORCL': 'Oracle Corporation',
-  'X': 'United States Steel Corporation',
+  'TSLA': 'Tesla Inc.',
 };
 
 Future<List<Series>> fetchDailySeries(String symbol) async {
   List<Series> series = [];
 
-  series.add(const Series(open: 40.0, close: 20.0, high: 3.0, low: 0.5, volume: 1000.0, date: '2022-01-10'));
-  series.add(const Series(open: 23.0, close: 33.0, high: 4.0, low: 1.5, volume: 2000.0, date: '2022-01-11'));
-  series.add(const Series(open: 15.0, close: 12.0, high: 5.0, low: 2.5, volume: 3000.0, date: '2022-01-12'));
-  series.add(const Series(open: 66.0, close: 50.0, high: 6.0, low: 3.5, volume: 4000.0, date: '2022-01-13'));
-  series.add(const Series(open: 78.0, close: 55.0, high: 7.0, low: 4.5, volume: 5000.0, date: '2022-01-14'));
-  series.add(const Series(open: 32.0, close: 60.0, high: 8.0, low: 5.5, volume: 6000.0, date: '2022-01-15'));
-  series.add(const Series(open: 25.0, close: 13.0, high: 9.0, low: 6.5, volume: 7000.0, date: '2022-01-16'));
-  series.add(const Series(open: 64.0, close: 35.0, high: 10.0, low: 7.5, volume: 8000.0, date: '2022-01-17'));
+  for (int i = 0; i < 7; i++)
+    series.add(
+      Series(
+        date: '2022-01-0${i + 1}',
+        open: Random.secure().nextDouble() * 100,
+        high: Random.secure().nextDouble() * 100,
+        low: Random.secure().nextDouble() * 100,
+        close: Random.secure().nextDouble() * 100,
+        volume: Random.secure().nextDouble() * 100,
+      )
+    );
 
   return series;
 
