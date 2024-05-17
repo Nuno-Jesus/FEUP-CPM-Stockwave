@@ -60,53 +60,64 @@ class CompanyCard extends StatelessWidget {
         ? Theme.of(context).colorScheme.onSecondaryContainer
         : Theme.of(context).colorScheme.onPrimaryContainer;
 
+    final double differential = (todaySeries.close - todaySeries.open) / todaySeries.open * 100;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Row(
-        // Company Logo
-        children: [
-          Container(
-            padding: const EdgeInsets.all(7),
-            decoration: BoxDecoration(
-              color: const Color.fromRGBO(0, 0, 0, 0.17),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Icon(company['icon'], size: 30, color: textColor),
-          ),
-
-          // Company name and NASDAQ symbol
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                margin: const EdgeInsets.only(left: 11),
-                child: Text(
-                  company['symbol'],
-                  style: TextStyle(
-                      color: textColor,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600
-                  ),
+          // Company Logo
+          children: [
+            SizedBox(
+              width: 50,
+              height: 50,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: const Color.fromRGBO(0, 0, 0, 0.17),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Image(
+                  image: AssetImage('assets/logos/${company['symbol']}.png'),
                 ),
               ),
-              
-              // Company name
-              Container(
-                margin: const EdgeInsets.only(left: 11),
-                child: Text(
-                  company['name'],
-                  style: TextStyle(
-                      color: textColor.withOpacity(0.7),
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400
+            ),
+
+            // Company name and NASDAQ symbol
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(left: 11),
+                  child: Text(
+                    company['symbol'],
+                    style: TextStyle(
+                        color: textColor,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600
+                    ),
                   ),
                 ),
-              )
-            ],
-          )
-        ],
-      ),
+
+                // Company name
+                Container(
+                  margin: const EdgeInsets.only(left: 11),
+                  child: SizedBox(
+                    width: 150,
+                    child: Text(
+                      company['name'],
+                      style: TextStyle(
+                          color: textColor.withOpacity(0.7),
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400
+                      ),
+                      overflow: TextOverflow.clip,
+                    ),
+                  ),
+                )
+              ],
+            )
+          ],
+        ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
@@ -118,11 +129,12 @@ class CompanyCard extends StatelessWidget {
                   fontWeight: FontWeight.bold
               ),
             ),
-            const Text(
+            Text(
               //ISTO AQUI PODE SER CALCULADO COM A DIFERENÇA ENTRE O CLOSE E O OPEN DIVIDIDO PELO OPEN
-              "(+7,01%) USD",
+              // "(+7,01%) USD",
+              "(${differential > 0 ? "+" : ""}${differential.toStringAsFixed(2)}%) USD",
               style: TextStyle(
-                  color: Color(0xFF42CFA2),
+                  color: (differential > 0 ? const Color(0xFF42CFA2) : const Color(0xFFD32F2F)),
                   fontSize: 14,
                   fontWeight: FontWeight.w400
               ),
@@ -187,7 +199,7 @@ class CompanyCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Day Close',
+              'Day Low',
               style: TextStyle(
                   color: textColor.withOpacity(0.6),
                   fontSize: 14,
@@ -195,7 +207,7 @@ class CompanyCard extends StatelessWidget {
               ),
             ),
             Text(
-              '\$ ${todaySeries.close.toStringAsFixed(2)}',
+              '\$ ${todaySeries.low.toStringAsFixed(2)}',
               style: TextStyle(
                   color: textColor,
                   fontSize: 22,

@@ -62,9 +62,6 @@ class _OneCompanyViewState extends State<OneCompanyView> {
         }
         else {
           debugPrint('Snapshot data ${snapshot.data?[0].toString()}');
-          // company = snapshot.data?[0];;
-          // String str1 = snapshot.data?[0];
-          // String str2 = snapshot.data?[1];
 
           company = snapshot.data?[0];
           series = snapshot.data?[1];
@@ -73,7 +70,6 @@ class _OneCompanyViewState extends State<OneCompanyView> {
               appBar: AppBar(
                 backgroundColor: Theme.of(context).colorScheme.primary,
                 title: Text(snapshot.data?[0]['name']),
-                // title: Text('Company'),
                 centerTitle: true,
                 leading: IconButton(
                   icon: const Icon(Icons.arrow_back),
@@ -104,13 +100,6 @@ class _OneCompanyViewState extends State<OneCompanyView> {
                   ],
                 ),
               )
-              // body: Center(
-              //     child: Text('Open: ${snapshot.data?[0][0].open} '
-              //         'Close: ${snapshot.data?[0][0].close} '
-              //         'High: ${snapshot.data?[0][0].high} '
-              //         'Low: ${snapshot.data?[0][0].low} '
-              //         'Volume: ${snapshot.data?[0][0].volume})'),
-              // )
           );
         }
       },

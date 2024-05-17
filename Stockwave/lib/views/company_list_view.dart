@@ -31,7 +31,7 @@ class _CompanyListViewState extends State<CompanyListView> {
 
   @override
   Widget build(BuildContext context){
-    List<MapEntry<String, List<dynamic>>> companiesList = companies.entries.toList();
+    List<MapEntry<String, String>> companiesList = companies.entries.toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -39,7 +39,7 @@ class _CompanyListViewState extends State<CompanyListView> {
         backgroundColor: Theme.of(context).colorScheme.primary,
         centerTitle: true,
         leading: IconButton(
-          icon: Icon(Icons.info_outline),
+          icon: const Icon(Icons.info_outline),
           onPressed: () {
             showDialog(
               context: context,
@@ -47,7 +47,7 @@ class _CompanyListViewState extends State<CompanyListView> {
                 return AlertDialog(
                   // title: Text('Help'),
                   icon: Icon(Icons.info_outline, color: Theme.of(context).colorScheme.onBackground),
-                  content: Text('Select at most 2 companies to analyse.'),
+                  content: const Text('Select at most 2 companies to analyse.'),
                 );
               },
             );
@@ -80,7 +80,7 @@ class _CompanyListViewState extends State<CompanyListView> {
                   ),
                 ),
                 title: Text(companiesList[index].key, style: TextStyle(fontWeight: FontWeight.bold)),
-                subtitle: Text(companiesList[index].value[0], overflow: TextOverflow.ellipsis),
+                subtitle: Text(companiesList[index].value, overflow: TextOverflow.ellipsis),
                 onTap: () {
                   setState(() {
                     if (selectedCompanies.contains(index)) {
