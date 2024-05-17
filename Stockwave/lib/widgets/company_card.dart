@@ -119,6 +119,7 @@ class CompanyCard extends StatelessWidget {
               ),
             ),
             const Text(
+              //ISTO AQUI PODE SER CALCULADO COM A DIFERENÇA ENTRE O CLOSE E O OPEN DIVIDIDO PELO OPEN
               "(+7,01%) USD",
               style: TextStyle(
                   color: Color(0xFF42CFA2),

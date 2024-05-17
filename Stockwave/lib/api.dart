@@ -9,19 +9,19 @@ import 'models/company.dart';
 
 // const String apiKey = 'XYEF90V50KRJJYD0';
 const String apiKey = 'SE8XFCS9V4LJRN8Q';
-
 const String host = 'https://www.alphavantage.co';
-const Map<String, IconData> companies = {
-  'AAPL': Icons.apple,
-  'IBM': Icons.computer,
-  'HPQ': Icons.print,
-  'MSFT': Icons.window,
-  'ORCL': Icons.data_usage,
-  'GOOGL': Icons.search,
-  'FB': Icons.facebook,
-  'X': Icons.close,
-  'INTC': Icons.memory,
-  'AMZN': Icons.shopping_cart,
+
+const Map<String, List<dynamic>> companies = {
+  'AAPL': ['Apple Inc.', Icons.apple],
+  'MSFT': ['Microsoft Corporation', Icons.computer],
+  'AMZN': ['Amazon.com Inc.', Icons.shopping_cart],
+  'GOOGL': ['Alphabet Inc.', Icons.search],
+  'FB': ['Meta Platforms Inc.', Icons.facebook],
+  'IBM': ['International Business Machines Corporation', Icons.computer],
+  'INTC': ['Intel Corporation', Icons.memory],
+  'HPQ': ['HP Inc.', Icons.print],
+  'ORCL': ['Oracle Corporation', Icons.data_usage],
+  'X': ['United States Steel Corporation', Icons.close],
 };
 
 Future<List<Series>> fetchDailySeries(String symbol) async {
@@ -78,7 +78,7 @@ Future<Company> fetchCompanyOverview(String symbol) async {
       'name': data['Name'],
       'symbol': data['Symbol'],
       'description' : data['Description'],
-      'icon': companies[data['Symbol']],
+      'icon': companies[data['Symbol']]![1],
     });
 
     debugPrint('Company overview: ${company.toString()}');
