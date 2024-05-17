@@ -31,11 +31,11 @@ Future<List<Series>> fetchDailySeries(String symbol) async {
         '&symbol=$symbol'
         '&apikey=$apiKey'));
 
-  debugPrint('Response: ${response.body}');
+  // debugPrint('Response: ${response.body}');
 
   if (response.statusCode == 200) {
     final entries = jsonDecode(response.body)['Time Series (Daily)'].entries;
-    debugPrint('Entries: $entries');
+    // debugPrint('Entries: $entries');
     List<Series> series = [];
 
     for (var entry in entries) {
@@ -62,6 +62,7 @@ Future<Company> fetchCompanyOverview(String symbol) async {
       '&apikey=$apiKey'));
 
   debugPrint('Response: ${response.body}');
+  debugPrint('Response Status Code ${response.statusCode}');
   if (response.statusCode == 200) {
     final data = jsonDecode(response.body);
 
