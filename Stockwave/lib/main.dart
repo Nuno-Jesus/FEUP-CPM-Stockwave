@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:stockwave/theme.dart';
+import 'package:Stockwave/theme.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:stockwave/views/company_list_view.dart';
-import 'package:stockwave/views/two_company_view.dart';
+import 'package:Stockwave/views/company_list_view.dart';
+import 'package:Stockwave/views/two_company_view.dart';
 
 void main() {
   runApp(const MyApp());

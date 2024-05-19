@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:stockwave/views/one_company_view.dart';
-import 'package:stockwave/views/two_company_view.dart';
+import 'package:Stockwave/views/one_company_view.dart';
+import 'package:Stockwave/views/two_company_view.dart';
 
 import '../api.dart';
 import '../models/company.dart';

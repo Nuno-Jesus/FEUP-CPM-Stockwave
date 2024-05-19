@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:stockwave/models/company.dart';
+import 'package:Stockwave/models/company.dart';
 
 import 'item.dart';
 import 'company_metrics_table.dart';

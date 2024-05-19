@@ -1,4 +1,4 @@
-# stockwave
+# Stockwave
 
 Stock comparison application, written with Flutter.
 

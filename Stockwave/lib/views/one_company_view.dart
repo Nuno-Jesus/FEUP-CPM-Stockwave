@@ -1,12 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:stockwave/widgets/company_candle_stock_chart.dart';
-import 'package:stockwave/widgets/company_card.dart';
-import 'package:stockwave/widgets/company_metrics_table.dart';
-import 'package:stockwave/widgets/company_spline_stock_chart.dart';
-import 'package:stockwave/models/company.dart';
-import 'package:stockwave/models/series.dart';
+import 'package:Stockwave/widgets/company_candle_stock_chart.dart';
+import 'package:Stockwave/widgets/company_card.dart';
+import 'package:Stockwave/widgets/company_metrics_table.dart';
+import 'package:Stockwave/widgets/company_spline_stock_chart.dart';
+import 'package:Stockwave/models/company.dart';
+import 'package:Stockwave/models/series.dart';
 
 import '../api.dart';
 import '../utils/math.dart';
@@ -66,14 +66,13 @@ class _OneCompanyViewState extends State<OneCompanyView> {
     return FutureBuilder(
       future: futures,
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
+        if (snapshot.connectionState == ConnectionState.waiting
+            || snapshot.connectionState == ConnectionState.done && !snapshot.hasData) {
           return Center(
             child: CircularProgressIndicator(color: Theme.of(context).colorScheme.primaryContainer),
           );
         }
-        else {
-          company = snapshot.data?[0];
-          series = snapshot.data?[1];
+        else if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
           return Scaffold(
               appBar: AppBar(
                 backgroundColor: Theme.of(context).colorScheme.primary,
@@ -114,6 +113,11 @@ class _OneCompanyViewState extends State<OneCompanyView> {
                   ],
                 ),
               )
+          );
+        }
+        else {
+          return Center(
+            child: Text('Error: ${snapshot.error}'),
           );
         }
       },

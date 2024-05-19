@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'package:stockwave/models/series.dart';
-import 'package:stockwave/utils/math.dart';
+import 'package:Stockwave/models/series.dart';
+import 'package:Stockwave/utils/math.dart';
 
 import 'models/company.dart';
 
@@ -73,19 +73,19 @@ Future<List<Series>> fetchDailySeries(String symbol) async {
 }
 
 Future<Company> fetchCompanyOverview(String symbol) async {
-  return Company(metrics: {
-    'Market Cap': 'N/A',
-    'Revenue': 'N/A',
-    'Dividend Yield': 'N/A',
-    'P/E Ratio': 'N/A',
-    'EPS': 'N/A',
-    'Beta': 'N/A',
-  },
-  details: {
-    'name': companies[symbol]!,
-    'symbol': symbol,
-    'description': 'N/A',
-  });
+  // return Company(metrics: {
+  //   'Market Cap': 'N/A',
+  //   'Revenue': 'N/A',
+  //   'Dividend Yield': 'N/A',
+  //   'P/E Ratio': 'N/A',
+  //   'EPS': 'N/A',
+  //   'Beta': 'N/A',
+  // },
+  // details: {
+  //   'name': companies[symbol]!,
+  //   'symbol': symbol,
+  //   'description': 'N/A',
+  // });
 
   final response = await http
       .get(Uri.parse('$host/query?'
@@ -93,7 +93,7 @@ Future<Company> fetchCompanyOverview(String symbol) async {
       '&symbol=$symbol'
       '&apikey=$apiKey'));
 
-  debugPrint('URL: ${host}/query?function=OVERVIEW&symbol=${symbol}&apikey=${apiKey}')
+  debugPrint('URL: ${host}/query?function=OVERVIEW&symbol=${symbol}&apikey=${apiKey}');
   debugPrint('Response Status Code ${response.statusCode}');
   debugPrint('Response: ${response.body}');
   if (response.statusCode == 200) {

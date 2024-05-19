@@ -1,13 +1,13 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:stockwave/widgets/company_metrics_table.dart';
-import 'package:stockwave/widgets/my_divider.dart';
-import 'package:stockwave/widgets/company_card.dart';
-import 'package:stockwave/widgets/company_general_information.dart';
-import 'package:stockwave/widgets/company_spline_stock_chart.dart';
-import 'package:stockwave/models/company.dart';
-import 'package:stockwave/models/series.dart';
+import 'package:Stockwave/widgets/company_metrics_table.dart';
+import 'package:Stockwave/widgets/my_divider.dart';
+import 'package:Stockwave/widgets/company_card.dart';
+import 'package:Stockwave/widgets/company_general_information.dart';
+import 'package:Stockwave/widgets/company_spline_stock_chart.dart';
+import 'package:Stockwave/models/company.dart';
+import 'package:Stockwave/models/series.dart';
 import 'package:scroll_snap_list/scroll_snap_list.dart';
 
 import '../api.dart';
