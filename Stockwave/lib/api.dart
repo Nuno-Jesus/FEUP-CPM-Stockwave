@@ -1,4 +1,3 @@
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -42,22 +41,25 @@ Future<List<Series>> fetchDailySeries(String symbol) async {
   if (response.statusCode == 200) {
     final data = jsonDecode(response.body);
     if (data['Information'] != "") {
-      for (int i = 0; i < 7; i++)
+      for (int i = 0; i < 7; i++) {
         series.add(Series.generate(i));
+      }
       return series;
     }
 
     final entries = data['Time Series (Daily)'].entries;
     for (var entry in entries) {
       series.add(Series.fromJson(entry.key, entry.value));
-      if (series.length == 7)
+      if (series.length == 7) {
         break;
+      }
     }
     debugPrint('Series: $series');
     return (series);
   } else {
-    for (int i = 0; i < 7; i++)
+    for (int i = 0; i < 7; i++) {
       series.add(Series.generate(i));
+    }
     return series;
   }
 }
@@ -70,13 +72,14 @@ Future<Company> fetchCompanyOverview(String symbol) async {
       '&symbol=$symbol'
       '&apikey=$apiKey'));
 
-  debugPrint('URL: ${host}/query?function=OVERVIEW&symbol=${symbol}&apikey=${apiKey}');
+  debugPrint('URL: $host/query?function=OVERVIEW&symbol=$symbol&apikey=$apiKey');
   debugPrint('Response Status Code ${response.statusCode}');
   debugPrint('Response: ${response.body}');
   if (response.statusCode == 200) {
     final data = jsonDecode(response.body);
-    if (data['Information'] != "")
+    if (data['Information'] != "") {
       return (Company.dummy(symbol));
+    }
     debugPrint('Data: $data');
 
     Company company = Company(metrics: {

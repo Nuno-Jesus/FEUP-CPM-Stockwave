@@ -1,4 +1,3 @@
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:Stockwave/widgets/company_metrics_table.dart';
@@ -8,7 +7,6 @@ import 'package:Stockwave/widgets/company_general_information.dart';
 import 'package:Stockwave/widgets/company_spline_stock_chart.dart';
 import 'package:Stockwave/models/company.dart';
 import 'package:Stockwave/models/series.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:scroll_snap_list/scroll_snap_list.dart';
 
 import '../api.dart';
@@ -99,7 +97,7 @@ class _TwoCompanyViewState extends State<TwoCompanyView> {
           backgroundColor: Theme.of(context).colorScheme.primary,
           title: Text(
               '${firstCompany['symbol']} vs ${secondCompany['symbol']}',
-              style: TextStyle(fontSize: 19)
+              style: const TextStyle(fontSize: 19)
           ),
           centerTitle: true,
           leading: IconButton(

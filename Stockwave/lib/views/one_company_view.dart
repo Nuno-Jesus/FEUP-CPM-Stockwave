@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:Stockwave/widgets/company_candle_stock_chart.dart';
@@ -7,10 +6,8 @@ import 'package:Stockwave/widgets/company_metrics_table.dart';
 import 'package:Stockwave/widgets/company_spline_stock_chart.dart';
 import 'package:Stockwave/models/company.dart';
 import 'package:Stockwave/models/series.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../api.dart';
-import '../utils/math.dart';
 import '../widgets/company_general_information.dart';
 import '../widgets/my_divider.dart';
 
@@ -77,7 +74,7 @@ class _OneCompanyViewState extends State<OneCompanyView> {
           return Center(child: Text('Error: ${snapshot.error}'));
         } else if (!snapshot.hasData || snapshot.data == null || snapshot.data!.isEmpty) {
           print('Snapshot has no data');
-          return Center(child: Text('No data available'));
+          return const Center(child: Text('No data available'));
         } else {
           print('Snapshot data: ${snapshot.data}');
           company = snapshot.data![0] as Company;

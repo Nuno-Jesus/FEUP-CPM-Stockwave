@@ -3,7 +3,6 @@ import 'package:Stockwave/views/one_company_view.dart';
 import 'package:Stockwave/views/two_company_view.dart';
 
 import '../api.dart';
-import '../models/company.dart';
 
 class CompanyListView extends StatefulWidget{
   const CompanyListView({
@@ -79,7 +78,7 @@ class _CompanyListViewState extends State<CompanyListView> {
                     height: 50,
                   ),
                 ),
-                title: Text(companiesList[index].key, style: TextStyle(fontWeight: FontWeight.bold)),
+                title: Text(companiesList[index].key, style: const TextStyle(fontWeight: FontWeight.bold)),
                 subtitle: Text(companiesList[index].value, overflow: TextOverflow.ellipsis),
                 onTap: () {
                   setState(() {

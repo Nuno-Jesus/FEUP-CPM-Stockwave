@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:Stockwave/models/company.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 
 class CompanyMetricsTable extends StatefulWidget {
   final Company company;

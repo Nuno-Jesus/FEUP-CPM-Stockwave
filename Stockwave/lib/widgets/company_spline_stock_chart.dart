@@ -1,15 +1,10 @@
-import 'dart:convert';
-import 'dart:ffi';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 import 'package:intl/intl.dart';
 
 
-import '../api.dart';
 import '../models/company.dart';
 import '../models/series.dart';
 
