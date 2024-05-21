@@ -1,4 +1,4 @@
-<h1> Ticket and Cafeteria Ordering System </h1>
+<h1> Stock Comparison App </h1>
 
 <h2> Table of Contents </h2>
 
@@ -6,12 +6,12 @@
 - [Architecture of the system](#architecture-of-the-system)
 - [Navigation Map](#navigation-map)
 - [Features / How To Use](#features--how-to-use)
-  - [View Single Company Stocks](#view-single-company-stocks)
-  - [View Two Company Stocks](#view-multiple-company-stocks)
+	- [View Single Company Stocks](#view-single-company-stocks)
+	- [View Two Company Stocks](#view-two-company-stocks)
 - [Scenario Tests](#scenario-tests)
-  - [Offline Access](#offline-access)
-  - [Online Access to One Company](#online-access-to-one-company)
-  - [Online Access to Two Companies](#online-access-to-two-companies)
+	- [Offline Access](#offline-access)
+	- [Online Access to One Company](#online-access-to-one-company)
+	- [Online Access to Two Companies](#online-access-to-two-companies)
 
 ## Group Composition
 
