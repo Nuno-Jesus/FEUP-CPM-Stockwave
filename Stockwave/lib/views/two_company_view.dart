@@ -8,9 +8,11 @@ import 'package:Stockwave/widgets/company_general_information.dart';
 import 'package:Stockwave/widgets/company_spline_stock_chart.dart';
 import 'package:Stockwave/models/company.dart';
 import 'package:Stockwave/models/series.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:scroll_snap_list/scroll_snap_list.dart';
 
 import '../api.dart';
+import '../widgets/company_candle_stock_chart.dart';
 
 class TwoCompanyView extends StatefulWidget {
   const TwoCompanyView({
@@ -30,14 +32,17 @@ class TwoCompanyView extends StatefulWidget {
 
 class _TwoCompanyViewState extends State<TwoCompanyView> {
   late Future<List<dynamic>> futures;
+
   List<Series> firstSeries = [];
   List<Series> secondSeries = [];
-  Company firstCompany = const Company.empty();
-  Company secondCompany = const Company.empty();
-  late Company selectedCompany;
-  IconData currentIcon = Icons.dark_mode_outlined;
 
-  @override
+  late Company firstCompany;
+  late Company secondCompany;
+  int selectedCompanyIndex = 0;
+
+  IconData currentIcon = Icons.dark_mode_outlined;
+  IconData chartIcon = Icons.show_chart_outlined;
+
   @override
   void initState() {
     super.initState();
@@ -58,12 +63,20 @@ class _TwoCompanyViewState extends State<TwoCompanyView> {
     });
   }
 
+  void onChangedChartType() {
+    setState(() {
+      chartIcon = chartIcon == Icons.candlestick_chart_outlined
+          ? Icons.show_chart_outlined
+          : Icons.candlestick_chart_outlined;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
       future: futures,
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
+        if (!snapshot.hasData) {
           return Center(
             child: CircularProgressIndicator(color: Theme.of(context).colorScheme.primaryContainer),
           );
@@ -73,7 +86,6 @@ class _TwoCompanyViewState extends State<TwoCompanyView> {
           firstSeries = snapshot.data![1];
           secondCompany = snapshot.data![2];
           secondSeries = snapshot.data![3];
-          selectedCompany = firstCompany;
 
           return _buildView([firstCompany, secondCompany]);
         }
@@ -96,6 +108,10 @@ class _TwoCompanyViewState extends State<TwoCompanyView> {
           ),
           actions: [
             IconButton(
+              icon: Icon(chartIcon),
+              onPressed: onChangedChartType,
+            ),
+            IconButton(
               icon: Icon(currentIcon),
               onPressed: onChangedColorTheme,
             ),
@@ -104,19 +120,18 @@ class _TwoCompanyViewState extends State<TwoCompanyView> {
         body: SingleChildScrollView(
           child: Column(
               children: [
-                CompanySplineStockChart(
-                    firstSeries: firstSeries,
-                    firstCompany: firstCompany,
-                    secondSeries: secondSeries,
-                    secondCompany: secondCompany
-                ),
+                chartIcon == Icons.candlestick_chart_outlined
+                    ? CompanySplineStockChart( firstSeries: firstSeries, firstCompany: firstCompany,
+                      secondSeries: secondSeries,secondCompany: secondCompany)
+                    : CompanyCandleStockChart(firstSeries: firstSeries, firstCompany: firstCompany,
+                      secondSeries: secondSeries, secondCompany: secondCompany),
                 SizedBox(
                   height: 160,
                   child: ScrollSnapList(
                     onItemFocus: (int index) {
                       debugPrint('Item $index has come into view');
                       setState(() {
-                        selectedCompany = companies[index];
+                        selectedCompanyIndex = index;
                       });
                     },
                     itemSize: MediaQuery.of(context).size.width,
@@ -138,8 +153,8 @@ class _TwoCompanyViewState extends State<TwoCompanyView> {
                   width: MediaQuery.of(context).size.width * 0.75,
                   margin: const EdgeInsets.only(top: 20, bottom: 9),
                 ),
-                CompanyMetricsTable(company: selectedCompany),
-                CompanyGeneralInformation(company: selectedCompany),
+                CompanyMetricsTable(company: companies[selectedCompanyIndex]),
+                CompanyGeneralInformation(company: companies[selectedCompanyIndex]),
                 const SizedBox(height: 20),
               ]
           ),

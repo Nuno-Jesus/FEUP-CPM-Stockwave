@@ -1,6 +1,8 @@
+import 'dart:math';
+
 class Company {
   final Map<String, String> metrics;
-  final Map<String, dynamic> details;
+  final Map<String, String> details;
 
   const Company({
     required this.metrics,
@@ -20,6 +22,22 @@ class Company {
           'name': 'N/A',
           'symbol': 'N/A',
           'description': 'N/A',
+        };
+
+
+  Company.dummy(String symbol) :
+        metrics = {
+          'Market Cap': (Random.secure().nextDouble() * 300).toStringAsFixed(2),
+          'Revenue': (Random.secure().nextDouble() * 100).toStringAsFixed(2),
+          'Dividend Yield': (Random.secure().nextDouble() * 100).toStringAsFixed(2),
+          'P/E Ratio': (Random.secure().nextDouble() * 50).toStringAsFixed(2),
+          'EPS': (Random.secure().nextDouble() * 30).toStringAsFixed(2),
+          'Beta': (Random.secure().nextDouble() * 15).toStringAsFixed(2),
+        },
+        details = {
+          'name': '$symbol N/A',
+          'symbol': symbol,
+          'description': '$symbol N/A',
         };
 
   dynamic operator [](String key){

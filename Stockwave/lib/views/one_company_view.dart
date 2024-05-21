@@ -7,6 +7,7 @@ import 'package:Stockwave/widgets/company_metrics_table.dart';
 import 'package:Stockwave/widgets/company_spline_stock_chart.dart';
 import 'package:Stockwave/models/company.dart';
 import 'package:Stockwave/models/series.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../api.dart';
 import '../utils/math.dart';
@@ -30,7 +31,7 @@ class OneCompanyView extends StatefulWidget {
 class _OneCompanyViewState extends State<OneCompanyView> {
   late Future<List<dynamic>> futures;
   List<Series> series = [];
-  Company company = const Company.empty();
+  late Company company;
   
   IconData themeIcon = Icons.dark_mode_outlined;
   IconData chartIcon = Icons.show_chart_outlined;
@@ -66,66 +67,68 @@ class _OneCompanyViewState extends State<OneCompanyView> {
     return FutureBuilder(
       future: futures,
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting
-            || snapshot.connectionState == ConnectionState.done && !snapshot.hasData) {
+        print('Snapshot connection state: ${snapshot.connectionState}');
+        if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
             child: CircularProgressIndicator(color: Theme.of(context).colorScheme.primaryContainer),
           );
-        }
-        else if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
-          return Scaffold(
-              appBar: AppBar(
-                backgroundColor: Theme.of(context).colorScheme.primary,
-                title: Text(company['name']),
-                centerTitle: true,
-                leading: IconButton(
-                  icon: const Icon(Icons.arrow_back),
-                  onPressed: () => Navigator.pop(context),
-                ),
-                actions: [
-                  IconButton(
-                    icon: Icon(chartIcon),
-                    onPressed: onChangedChartType,
-                  ),
-                  IconButton(
-                    icon: Icon(themeIcon),
-                    onPressed: onChangedColorTheme,
-                  ),
-                ],
+        } else if (snapshot.hasError) {
+          print('Snapshot error: ${snapshot.error}');
+          return Center(child: Text('Error: ${snapshot.error}'));
+        } else if (!snapshot.hasData || snapshot.data == null || snapshot.data!.isEmpty) {
+          print('Snapshot has no data');
+          return Center(child: Text('No data available'));
+        } else {
+          print('Snapshot data: ${snapshot.data}');
+          company = snapshot.data![0] as Company;
+          series = snapshot.data![1] as List<Series>;
+
+          return _buildView();
+      }
+    });
+  }
+
+  Widget _buildView() {
+    return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          title: Text(company['name']),
+          centerTitle: true,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () => Navigator.pop(context),
+          ),
+          actions: [
+            IconButton(
+              icon: Icon(chartIcon),
+              onPressed: onChangedChartType,
+            ),
+            IconButton(
+              icon: Icon(themeIcon),
+              onPressed: onChangedColorTheme,
+            ),
+          ],
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              chartIcon == Icons.show_chart_outlined
+                  ? CompanyCandleStockChart(firstSeries: series, firstCompany: company)
+                  : CompanySplineStockChart(firstSeries: series, firstCompany: company),
+              CompanyCard(
+                company: company,
+                todaySeries: series[0],
               ),
-              body: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    chartIcon == Icons.show_chart_outlined
-                        ? CompanyCandleStockChart(series: series, company: company)
-                        : CompanySplineStockChart(firstSeries: series, firstCompany: company),
-                    CompanyCard(
-                      company: company,
-                      todaySeries: series[0],
-                    ),
-                    MyDivider(
-                      width: MediaQuery.of(context).size.width * 0.75,
-                      margin: const EdgeInsets.only(top: 20, bottom: 9),
-                    ),
-                    CompanyMetricsTable(company: company),
-                    CompanyGeneralInformation(company: company),
-                    const SizedBox(height: 20),
-                  ],
-                ),
-              )
-          );
-        }
-        else {
-          return Center(
-            child: Text('Error: ${snapshot.error}'),
-          );
-        }
-      },
+              MyDivider(
+                width: MediaQuery.of(context).size.width * 0.75,
+                margin: const EdgeInsets.only(top: 20, bottom: 9),
+              ),
+              CompanyMetricsTable(company: company),
+              CompanyGeneralInformation(company: company),
+              const SizedBox(height: 20),
+            ],
+          ),
+        )
     );
   }
 }
-
-
-// body: Center(
-//   child: Text('Company: $str1\nSeries: $str2')
-// )

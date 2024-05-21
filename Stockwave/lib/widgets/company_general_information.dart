@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:Stockwave/models/company.dart';
 
-import 'item.dart';
 import 'company_metrics_table.dart';
 
 class CompanyGeneralInformation extends StatelessWidget {

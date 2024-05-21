@@ -9,12 +9,16 @@ import '../models/series.dart';
 class CompanyCandleStockChart extends StatelessWidget{
   const CompanyCandleStockChart({
     super.key,
-    required this.series,
-    required this.company,
+    required this.firstSeries,
+    required this.firstCompany,
+    this.secondSeries = const [],
+    this.secondCompany = const Company.empty(),
   });
 
-  final List<Series> series;
-  final Company company;
+  final List<Series> firstSeries;
+  final Company firstCompany;
+  final List<Series> secondSeries;
+  final Company secondCompany;
 
   @override
   Widget build(BuildContext context){
@@ -37,19 +41,42 @@ class CompanyCandleStockChart extends StatelessWidget{
       ),
       series: <CandleSeries<Series, DateTime>>[
         CandleSeries<Series, DateTime>(
-          name: company['symbol'],
-          dataSource: series,
+          name: firstCompany['symbol'],
+          dataSource: firstSeries,
           lowValueMapper: (Series sales, _) => sales.low,
           highValueMapper: (Series sales, _) => sales.high,
           openValueMapper: (Series sales, _) => sales.open,
           closeValueMapper: (Series sales, _) => sales.close,
+          bearColor: secondSeries.isNotEmpty
+              ? Theme.of(context).colorScheme.primaryContainer.withOpacity(0.5)
+              : Colors.red,
+          bullColor: secondSeries.isNotEmpty
+              ? Theme.of(context).colorScheme.primaryContainer
+              : Colors.green,
           xValueMapper: (Series sales, _) => DateTime(
             int.parse(sales.date.substring(0, 4)),
             int.parse(sales.date.substring(5, 7)),
             int.parse(sales.date.substring(8, 10)),
           ),
           animationDuration: 500,
-        )
+        ),
+        if (secondSeries.isNotEmpty)
+          CandleSeries<Series, DateTime>(
+            name: secondCompany['symbol'],
+            dataSource: secondSeries,
+            lowValueMapper: (Series sales, _) => sales.low,
+            highValueMapper: (Series sales, _) => sales.high,
+            openValueMapper: (Series sales, _) => sales.open,
+            closeValueMapper: (Series sales, _) => sales.close,
+            bearColor: Theme.of(context).colorScheme.secondaryContainer.withOpacity(0.5),
+            bullColor: Theme.of(context).colorScheme.secondaryContainer,
+            xValueMapper: (Series sales, _) => DateTime(
+              int.parse(sales.date.substring(0, 4)),
+              int.parse(sales.date.substring(5, 7)),
+              int.parse(sales.date.substring(8, 10)),
+            ),
+            animationDuration: 500,
+          )
       ],
     );
   }

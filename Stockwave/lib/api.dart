@@ -9,39 +9,29 @@ import 'package:Stockwave/utils/math.dart';
 
 import 'models/company.dart';
 
-// const String apiKey = 'XYEF90V50KRJJYD0';
-const String apiKey = 'SE8XFCS9V4LJRN8Q';
+const String apiKey = 'XYEF90V50KRJJYD0';
+// const String apiKey = 'SE8XFCS9V4LJRN8Q';
 const String host = 'https://www.alphavantage.co';
 
 const Map<String, String> companies = {
   'AAPL': 'Apple Inc.',
   'MSFT': 'Microsoft Corporation',
   'AMZN': 'Amazon.com Inc.',
-  'GOOGL': 'Alphabet Inc.',
+  'NVDA': 'NVIDIA Corporation',
   'FB': 'Meta Platforms Inc.',
   'IBM': 'International Business Machines Corporation',
   'INTC': 'Intel Corporation',
   'HPQ': 'HP Inc.',
-  'ORCL': 'Oracle Corporation',
+  'DIS': 'The Walt Disney Company',
   'TSLA': 'Tesla Inc.',
 };
 
 Future<List<Series>> fetchDailySeries(String symbol) async {
   List<Series> series = [];
 
-  for (int i = 0; i < 7; i++)
-    series.add(
-      Series(
-        date: '2022-01-0${i + 1}',
-        open: Random.secure().nextDouble() * 100,
-        high: Random.secure().nextDouble() * 100,
-        low: Random.secure().nextDouble() * 100,
-        close: Random.secure().nextDouble() * 100,
-        volume: Random.secure().nextDouble() * 100,
-      )
-    );
-
-  return series;
+  // for (int i = 0; i < 7; i++)
+  //   series.add(Series.generate(i));
+  // return series;
 
   final response = await http
       .get(Uri.parse('$host/query?'
@@ -49,44 +39,31 @@ Future<List<Series>> fetchDailySeries(String symbol) async {
       '&symbol=$symbol'
       '&apikey=$apiKey'));
 
-  // debugPrint('Response: ${response.body}');
-
   if (response.statusCode == 200) {
-    final entries = jsonDecode(response.body)['Time Series (Daily)'].entries;
-    // debugPrint('Entries: $entries');
-    List<Series> series = [];
-
-    for (var entry in entries) {
-      series.add(Series(
-        date: entry.key,
-        open: double.parse(entry.value['1. open']),
-        high: double.parse(entry.value['2. high']),
-        low: double.parse(entry.value['3. low']),
-        close: double.parse(entry.value['4. close']),
-        volume: double.parse(entry.value['5. volume']),
-      ));
+    final data = jsonDecode(response.body);
+    if (data['Information'] != "") {
+      for (int i = 0; i < 7; i++)
+        series.add(Series.generate(i));
+      return series;
     }
+
+    final entries = data['Time Series (Daily)'].entries;
+    for (var entry in entries) {
+      series.add(Series.fromJson(entry.key, entry.value));
+      if (series.length == 7)
+        break;
+    }
+    debugPrint('Series: $series');
     return (series);
   } else {
-    return [];
+    for (int i = 0; i < 7; i++)
+      series.add(Series.generate(i));
+    return series;
   }
 }
 
 Future<Company> fetchCompanyOverview(String symbol) async {
-  // return Company(metrics: {
-  //   'Market Cap': 'N/A',
-  //   'Revenue': 'N/A',
-  //   'Dividend Yield': 'N/A',
-  //   'P/E Ratio': 'N/A',
-  //   'EPS': 'N/A',
-  //   'Beta': 'N/A',
-  // },
-  // details: {
-  //   'name': companies[symbol]!,
-  //   'symbol': symbol,
-  //   'description': 'N/A',
-  // });
-
+  // return Company.dummy(symbol);
   final response = await http
       .get(Uri.parse('$host/query?'
       'function=OVERVIEW'
@@ -98,6 +75,9 @@ Future<Company> fetchCompanyOverview(String symbol) async {
   debugPrint('Response: ${response.body}');
   if (response.statusCode == 200) {
     final data = jsonDecode(response.body);
+    if (data['Information'] != "")
+      return (Company.dummy(symbol));
+    debugPrint('Data: $data');
 
     Company company = Company(metrics: {
       'Market Cap': reduceDollars(data['MarketCapitalization']),
@@ -117,7 +97,7 @@ Future<Company> fetchCompanyOverview(String symbol) async {
 
     return company;
   } else {
-    return const Company.empty();
+    return Company.dummy(symbol);
   }
 }
 

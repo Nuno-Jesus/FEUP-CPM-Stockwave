@@ -1,4 +1,6 @@
 
+import 'dart:math';
+
 class Series {
   final double open;
   final double close;
@@ -36,6 +38,14 @@ class Series {
       _ => throw const FormatException('Failed to load series.'),
     };
   }
+
+  Series.generate(int seed) :
+        open = (Random.secure().nextDouble() * 100),
+        high = (Random.secure().nextDouble() * 100),
+        low = (Random.secure().nextDouble() * 100),
+        close = (Random.secure().nextDouble() * 100),
+        volume = (Random.secure().nextDouble() * 100),
+        date = "2022-01-0${seed + 1}";
 
   @override
   String toString() {
