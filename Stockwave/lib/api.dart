@@ -40,7 +40,8 @@ Future<List<Series>> fetchDailySeries(String symbol) async {
 
   if (response.statusCode == 200) {
     final data = jsonDecode(response.body);
-    if (data['Information'] != "") {
+    if (data['Information'] != null) {
+      debugPrint(data['Information']);
       for (int i = 0; i < 7; i++) {
         series.add(Series.generate(i));
       }
@@ -77,7 +78,7 @@ Future<Company> fetchCompanyOverview(String symbol) async {
   debugPrint('Response: ${response.body}');
   if (response.statusCode == 200) {
     final data = jsonDecode(response.body);
-    if (data['Information'] != "") {
+    if (data['Information'] != null) {
       return (Company.dummy(symbol));
     }
     debugPrint('Data: $data');
