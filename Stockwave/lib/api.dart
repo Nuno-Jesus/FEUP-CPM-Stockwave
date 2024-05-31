@@ -73,21 +73,22 @@ Future<Company> fetchCompanyOverview(String symbol) async {
       '&symbol=$symbol'
       '&apikey=$apiKey'));
 
-  debugPrint('URL: $host/query?function=OVERVIEW&symbol=$symbol&apikey=$apiKey');
-  debugPrint('Response Status Code ${response.statusCode}');
-  debugPrint('Response: ${response.body}');
+  // debugPrint('URL: $host/query?function=OVERVIEW&symbol=$symbol&apikey=$apiKey');
+  // debugPrint('Response Status Code ${response.statusCode}');
+  // debugPrint('Response: ${response.body}');
   if (response.statusCode == 200) {
-    final data = jsonDecode(response.body);
+    var data = jsonDecode(response.body);
     if (data['Information'] != null) {
       return (Company.dummy(symbol));
     }
+    data = parseCompanyData(data);
     debugPrint('Data: $data');
 
     Company company = Company(metrics: {
       'Market Cap': reduceDollars(data['MarketCapitalization']),
       'Revenue': reduceDollars(data['RevenueTTM']),
       'Dividend Yield': reduceDividendYield(data['DividendYield']),
-      'P/E Ratio': data['PERatio'],
+      'P/E Ratio': data['PERatio'] == "None" ? "N/A" : data['PERatio'],
       'EPS': data['EPS'],
       'Beta': data['Beta'],
     },
@@ -103,6 +104,17 @@ Future<Company> fetchCompanyOverview(String symbol) async {
   } else {
     return Company.dummy(symbol);
   }
+}
+
+dynamic parseCompanyData(dynamic data){
+  List<String> keys = ['MarketCapitalization', 'RevenueTTM', 'DividendYield', 'PERatio', 'EPS', 'Beta'];
+
+  for (var key in keys){
+    if (data[key] == "None" || data[key] == null){
+      data[key] = "N/A";
+    }
+  }
+  return data;
 }
 
 Future<String> dummyFetchDailySeries(String symbol) async {

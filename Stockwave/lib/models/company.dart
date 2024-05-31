@@ -27,17 +27,17 @@ class Company {
 
   Company.dummy(String symbol) :
         metrics = {
-          'Market Cap': (Random.secure().nextDouble() * 300).toStringAsFixed(2),
-          'Revenue': (Random.secure().nextDouble() * 100).toStringAsFixed(2),
-          'Dividend Yield': (Random.secure().nextDouble() * 100).toStringAsFixed(2),
-          'P/E Ratio': (Random.secure().nextDouble() * 50).toStringAsFixed(2),
-          'EPS': (Random.secure().nextDouble() * 30).toStringAsFixed(2),
-          'Beta': (Random.secure().nextDouble() * 15).toStringAsFixed(2),
+          'Market Cap': 'N/A',
+          'Revenue': 'N/A',
+          'Dividend Yield': 'N/A',
+          'P/E Ratio': 'N/A',
+          'EPS': 'N/A',
+          'Beta': 'N/A',
         },
         details = {
-          'name': '$symbol N/A',
-          'symbol': symbol,
-          'description': '$symbol N/A',
+          'name': 'N/A',
+          'symbol': 'N/A',
+          'description': 'N/A',
         };
 
   dynamic operator [](String key){

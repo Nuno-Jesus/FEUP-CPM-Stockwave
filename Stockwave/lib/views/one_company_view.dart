@@ -1,4 +1,6 @@
 
+import 'package:Stockwave/views/no_requests_left_view.dart';
+import 'package:Stockwave/views/not_available_view.dart';
 import 'package:flutter/material.dart';
 import 'package:Stockwave/widgets/company_candle_stock_chart.dart';
 import 'package:Stockwave/widgets/company_card.dart';
@@ -65,17 +67,16 @@ class _OneCompanyViewState extends State<OneCompanyView> {
       future: futures,
       builder: (context, snapshot) {
         print('Snapshot connection state: ${snapshot.connectionState}');
+        print('Has data: ${snapshot.hasData}');
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
             child: CircularProgressIndicator(color: Theme.of(context).colorScheme.primaryContainer),
           );
-        } else if (snapshot.hasError) {
-          print('Snapshot error: ${snapshot.error}');
-          return Center(child: Text('Error: ${snapshot.error}'));
-        } else if (!snapshot.hasData || snapshot.data == null || snapshot.data!.isEmpty) {
-          print('Snapshot has no data');
-          return const Center(child: Text('No data available'));
-        } else {
+        }
+        else if (snapshot.connectionState == ConnectionState.done && !snapshot.hasData) {
+          return const NotAvailableView(); 
+        }
+        else {
           print('Snapshot data: ${snapshot.data}');
           company = snapshot.data![0] as Company;
           series = snapshot.data![1] as List<Series>;
@@ -86,7 +87,11 @@ class _OneCompanyViewState extends State<OneCompanyView> {
   }
 
   Widget _buildView() {
-    return Scaffold(
+    bool isDummy = company['name'] == 'N/A';
+
+    return isDummy
+        ? const NoRequestsLeftView()
+        : Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.primary,
           title: Text(company['name']),

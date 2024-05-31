@@ -1,4 +1,5 @@
 
+import 'package:Stockwave/views/no_requests_left_view.dart';
 import 'package:flutter/material.dart';
 import 'package:Stockwave/widgets/company_metrics_table.dart';
 import 'package:Stockwave/widgets/my_divider.dart';
@@ -11,6 +12,7 @@ import 'package:scroll_snap_list/scroll_snap_list.dart';
 
 import '../api.dart';
 import '../widgets/company_candle_stock_chart.dart';
+import 'not_available_view.dart';
 
 class TwoCompanyView extends StatefulWidget {
   const TwoCompanyView({
@@ -74,10 +76,13 @@ class _TwoCompanyViewState extends State<TwoCompanyView> {
     return FutureBuilder(
       future: futures,
       builder: (context, snapshot) {
-        if (!snapshot.hasData) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
             child: CircularProgressIndicator(color: Theme.of(context).colorScheme.primaryContainer),
           );
+        }
+        else if (snapshot.connectionState == ConnectionState.done && !snapshot.hasData) {
+          return const NotAvailableView();
         }
         else {
           firstCompany = snapshot.data![0];
@@ -92,7 +97,11 @@ class _TwoCompanyViewState extends State<TwoCompanyView> {
   }
 
   Widget _buildView(List<Company> companies){
-    return Scaffold(
+    bool isDummy = firstCompany['name'] == 'N/A' || secondCompany['name'] == 'N/A';
+
+    return isDummy
+        ? const NoRequestsLeftView()
+        : Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.primary,
           title: Text(

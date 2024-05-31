@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:Stockwave/views/no_internet_view.dart';
+import 'package:Stockwave/views/not_available_view.dart';
 import 'package:flutter/material.dart';
 import 'package:Stockwave/theme.dart';
 import 'package:google_fonts/google_fonts.dart';

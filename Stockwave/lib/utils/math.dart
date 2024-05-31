@@ -1,4 +1,8 @@
 String reduceDollars(String amount) {
+  if (amount == "None") {
+    return "N/A";
+  }
+
   double parsedValue = double.parse(amount);
   double reducedValue = 0.0;
 
