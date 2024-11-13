@@ -1,15 +1,18 @@
 # Stockwave
 
 <div align="center">
-	<image src="images/navigation_map.png">
+	<image src="https://github.com/user-attachments/assets/a8295a6b-91ca-423c-bbef-b0aa4dcf093b">
 </div>
-<div align="center">
-	<span><strong>Fig 1.</strong> Stockwave navigation map</span>
-</div>
+<br>
 
 ## Description
 
 This repository contains the work developed by [me](https://sigarra.up.pt/feup/pt/fest_geral.cursos_list?pv_num_unico=201905477), and [Carlos Veríssimo](https://sigarra.up.pt/feup/pt/fest_geral.cursos_list?pv_num_unico=201907716) in the practical classes of the Mobile Computation curricular unit in [2023/2024](https://sigarra.up.pt/feup/pt/ucurr_geral.ficha_uc_view?pv_ocorrencia_id=518814).
+
+<div align="center">
+	<image src="images/navigation_map.png">
+	<span><strong>Fig 1.</strong> Navigation Map</span>
+</div>
 
 ## Final Grade
 |Project 1 | Project 2 | Final Exam | FINAL |
